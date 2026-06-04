@@ -17,40 +17,6 @@ export function recruiterInputFieldUpdate(
     }));
 }
 
-// export function validation(name, value) {
-//     switch (name) {
-//         case 'companyName':
-//             if (!value.trim()) {
-//                 return 'name is required';
-//             } else if (value.trim().length < 3) {
-//                 return 'at least 3 characters';
-//             } else if (value.trim().length > 20) {
-//                 return 'Max 20 characters allowed';
-//             } else if (/\d/.test(value)) {
-//                 return 'Numbers are not allowed';
-//             } else if (!/^[A-Za-z\s]+$/.test(value)) {
-//                 return 'Only letters and spaces are allowed';
-//             }
-
-//             return '';
-
-//         case 'JobTitle':
-//             if (!value.trim()) {
-//                 return 'Job title is required';
-//             } else if (value.trim().length < 3) {
-//                 return 'Job title must be at least 3 characters';
-//             } else if (value.trim().length > 20) {
-//                 return 'Job title must not exceed 20 characters';
-//             } else if (!/^[A-Za-z0-9\s/-]+$/.test(value)) {
-//                 return 'Only letters, numbers, spaces, / and - are allowed';
-//             }
-
-//             return '';
-//         default:
-//             return '';
-//     }
-// }
-
 const validateTextField = (value, fieldName, min = 3, max = 50) => {
     const trimmedValue = value.trim();
 
@@ -179,3 +145,18 @@ export function validation(name, value) {
             return '';
     }
 }
+
+
+
+export const refresh = (
+    setRecruiterInputField,
+    setRecruiterErrors,
+    initialFormState,
+) => {
+    setRecruiterErrors({
+        ...initialFormState,
+    });
+    setRecruiterInputField({
+        ...initialFormState,
+    });
+};

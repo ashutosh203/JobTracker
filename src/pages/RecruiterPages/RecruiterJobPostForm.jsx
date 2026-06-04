@@ -1,15 +1,21 @@
 /** @format */
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import InputFieldset from '../../components/RecruiterComponents/InputFieldset';
 import JobContext from '../../context/JobContext';
-import { recruiterInputFieldUpdate } from '../../utils/recruitersHelpersFunction';
+import {
+    recruiterInputFieldUpdate,
+    refresh,
+} from '../../utils/recruitersHelpersFunction';
+import { RefreshCcw } from 'lucide-react';
+import { recruiterFields } from '../../utils/recruiterFields';
 
-const RecruiterJobPostForm = () => {
+const RecruiterJobPostForm = memo(() => {
     const {
         recruiterInputField,
         setRecruiterInputField,
         setRecruiterErrors,
         recruiterErrors,
+        initialFormState,
     } = useContext(JobContext);
     const isFormValid = Object.values(recruiterErrors).every(
         (error) => error === '',
@@ -17,90 +23,34 @@ const RecruiterJobPostForm = () => {
     return (
         <div className='w-full flex justify-center py-8 px-4 bg-gray-100'>
             <form className='w-full max-w-5xl bg-white border border-gray-200 rounded-2xl p-6 shadow-lg'>
-                <h2 className='text-center text-3xl font-bold text-gray-800 mb-8'>
+                <h2 className='text-center text-3xl font-bold text-gray-800 mb-8 relative'>
                     New Job Post
+                    <RefreshCcw
+                        className='absolute right-0 top-0 cursor-pointer'
+                        size={20}
+                        onClick={() =>
+                            refresh(
+                                setRecruiterInputField,
+                                setRecruiterErrors,
+                                initialFormState,
+                            )
+                        }
+                    />
                 </h2>
 
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
-                    <InputFieldset
-                        name={'companyName'}
-                        Title='Company Name'
-                        placeholder='Enter company name'
-                        value={recruiterInputField.companyName}
-                        setRecruiterInputField={setRecruiterInputField}
-                        recruiterErrors={recruiterErrors['companyName']}
-                        setRecruiterErrors={setRecruiterErrors}
-                    />
-
-                    <InputFieldset
-                        name={'JobTitle'}
-                        Title='Job Title'
-                        placeholder='Frontend Developer'
-                        value={recruiterInputField.JobTitle}
-                        setRecruiterInputField={setRecruiterInputField}
-                        recruiterErrors={recruiterErrors['JobTitle']}
-                        setRecruiterErrors={setRecruiterErrors}
-                    />
-
-                    <InputFieldset
-                        name={'Location'}
-                        Title='Location'
-                        placeholder='Noida, India'
-                        value={recruiterInputField.Location}
-                        setRecruiterInputField={setRecruiterInputField}
-                        recruiterErrors={recruiterErrors['Location']}
-                        setRecruiterErrors={setRecruiterErrors}
-                    />
-
-                    <InputFieldset
-                        name={'JobType'}
-                        Title='Job Type'
-                        placeholder='Full Time'
-                        value={recruiterInputField.JobType}
-                        setRecruiterInputField={setRecruiterInputField}
-                        recruiterErrors={recruiterErrors['JobType']}
-                        setRecruiterErrors={setRecruiterErrors}
-                    />
-
-                    <InputFieldset
-                        name={'IndustryType'}
-                        Title='Industry Type'
-                        placeholder='Software Development'
-                        value={recruiterInputField.IndustryType}
-                        setRecruiterInputField={setRecruiterInputField}
-                        recruiterErrors={recruiterErrors['IndustryType']}
-                        setRecruiterErrors={setRecruiterErrors}
-                    />
-
-                    <InputFieldset
-                        name={'Established'}
-                        Title='Established'
-                        placeholder='2015'
-                        value={recruiterInputField.Established}
-                        setRecruiterInputField={setRecruiterInputField}
-                        recruiterErrors={recruiterErrors['Established']}
-                        setRecruiterErrors={setRecruiterErrors}
-                    />
-
-                    <InputFieldset
-                        name={'Organization'}
-                        Title='Organization'
-                        placeholder='100-500 Employees'
-                        value={recruiterInputField.Organization}
-                        setRecruiterInputField={setRecruiterInputField}
-                        recruiterErrors={recruiterErrors['Organization']}
-                        setRecruiterErrors={setRecruiterErrors}
-                    />
-
-                    <InputFieldset
-                        name={'PerksBenefits'}
-                        Title='Perks & Benefits'
-                        placeholder='Health Insurance, WFH'
-                        value={recruiterInputField.PerksBenefits}
-                        setRecruiterInputField={setRecruiterInputField}
-                        recruiterErrors={recruiterErrors['PerksBenefits']}
-                        setRecruiterErrors={setRecruiterErrors}
-                    />
+                    {recruiterFields.map((field) => (
+                        <InputFieldset
+                            key={field.key}
+                            name={field.name}
+                            Title={field.Title}
+                            placeholder={field.placeholder}
+                            value={recruiterInputField[field.name]}
+                            setRecruiterInputField={setRecruiterInputField}
+                            recruiterErrors={recruiterErrors[field.name]}
+                            setRecruiterErrors={setRecruiterErrors}
+                        />
+                    ))}
                 </div>
 
                 <fieldset className='border border-gray-300 rounded-xl px-3 py-2 bg-white mt-5'>
@@ -142,6 +92,6 @@ const RecruiterJobPostForm = () => {
             </form>
         </div>
     );
-};
+});
 
 export default RecruiterJobPostForm;

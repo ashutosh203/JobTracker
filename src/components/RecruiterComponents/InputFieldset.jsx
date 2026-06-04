@@ -16,11 +16,6 @@ const InputFieldset = ({
         <fieldset className='border border-gray-300 rounded-xl px-3 py-2 bg-white'>
             <legend className='px-2 text-sm text-blue-600 font-medium capitalize'>
                 {Title}
-                {/* {recruiterErrors && (
-                    <span className='text-red-500 text-[9px]'>
-                        {recruiterErrors}
-                    </span>
-                )} */}
             </legend>
             <input
                 required
