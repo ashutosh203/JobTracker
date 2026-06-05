@@ -1,9 +1,10 @@
 /** @format */
-import { memo, useContext } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import InputFieldset from '../../components/RecruiterComponents/InputFieldset';
 import JobContext from '../../context/JobContext';
 import {
     recruiterInputFieldUpdate,
+    recruiterOnsubmitForm,
     refresh,
 } from '../../utils/recruitersHelpersFunction';
 import { RefreshCcw } from 'lucide-react';
@@ -18,10 +19,14 @@ const RecruiterJobPostForm = memo(() => {
         setRecruiterErrors,
         recruiterErrors,
         initialFormState,
+        setJobsData,
+        jobsData,
     } = useContext(JobContext);
     const isFormValid = Object.values(recruiterErrors).every(
         (error) => error === '',
     );
+
+    useEffect(() => console.log(jobsData), [jobsData]);
     const navigate = useNavigate();
     return (
         <div className='w-full flex justify-center py-10 px-4 flex-wrap bg-gray-100 relative'>
@@ -35,7 +40,23 @@ const RecruiterJobPostForm = memo(() => {
                     </span>
                 </button>
             </div>
-            <form className='w-full max-w-5xl bg-white border border-gray-200 rounded-2xl p-4 shadow-lg'>
+            <form
+                onSubmit={(event) =>
+                    recruiterOnsubmitForm(
+                        event,
+                        setJobsData,
+                        recruiterInputField,
+                        recruiterErrors,
+                        () => {
+                            refresh(
+                                setRecruiterInputField,
+                                setRecruiterErrors,
+                                initialFormState,
+                            );
+                        },
+                    )
+                }
+                className='w-full max-w-5xl bg-white border border-gray-200 rounded-2xl p-4 shadow-lg'>
                 <h2 className='text-center text-3xl font-bold text-gray-800 mb-8 relative'>
                     New Job Post
                     <RefreshCcw

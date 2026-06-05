@@ -146,8 +146,6 @@ export function validation(name, value) {
     }
 }
 
-
-
 export const refresh = (
     setRecruiterInputField,
     setRecruiterErrors,
@@ -159,4 +157,23 @@ export const refresh = (
     setRecruiterInputField({
         ...initialFormState,
     });
+};
+
+export const recruiterOnsubmitForm = (
+    event,
+    setJobsData,
+    recruiterInputField,
+    recruiterErrors,
+    callBack,
+) => {
+    event.preventDefault();
+    const hasErrors = Object.values(recruiterErrors).some(
+        (error) => error !== '',
+    );
+    if (hasErrors) {
+        console.log('this is some error');
+    } else {
+        setJobsData((prev) => [...prev, { ...recruiterInputField }]);
+        callBack();
+    }
 };

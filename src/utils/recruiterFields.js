@@ -18,6 +18,7 @@ const recruiterFields = [
         name: 'Location',
         Title: 'Location',
         placeholder: 'Noida, India',
+        key: uuidv4(),
     },
     {
         name: 'JobType',
