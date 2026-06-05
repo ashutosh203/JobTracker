@@ -70,6 +70,9 @@ const RecruiterNavBar = () => {
                             onClick={closeMenu}>
                             Applicants
                         </Link>
+                        <button className='text-center w-full relative px-1 py-1.5 rounded-lg bg-red-500/80 text-black-600 border-red-500/30 flex items-center'>
+                            <LogOut className= "relative left-2/5" size={20} />
+                        </button>
                     </div>
                 </div>
             )}
