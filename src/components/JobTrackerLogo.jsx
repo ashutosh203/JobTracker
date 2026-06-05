@@ -7,7 +7,7 @@ const JobTrackerLogo = () => {
     return (
         <div>
             <h1
-                className='text-3xl font-bold  tracking-wide'
+                className='text-3xl font-bold cursor-pointer tracking-wide'
                 onClick={() => navigate('/recruiter_admin_panel')}>
                 <span className='text-cyan-400 text-4xl'>J</span>ob
                 <span className='text-cyan-400 text-4xl ml-1'>T</span>racker
