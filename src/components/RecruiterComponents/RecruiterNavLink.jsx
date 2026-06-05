@@ -18,7 +18,7 @@ const RecruiterNavLink = () => {
     ];
 
     return (
-        <div className='w-full flex flex-col gap-3 p-3 bg-gray-50'>
+        <div className='w-full flex flex-col gap-3 p-3 '>
             {links.map((e) => (
                 <NavLink
                     key={e.name}
@@ -28,9 +28,11 @@ const RecruiterNavLink = () => {
             block
             w-full
             text-center
-            text-lg
+            
+            md:text-sm
             font-medium
             py-3
+            md:py-2 md:px-3
             rounded-xl
             transition-all
             duration-300

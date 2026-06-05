@@ -6,6 +6,7 @@ import RecruiterLayout from '../layouts/RecruiterLayout';
 import UserLayout from '../layouts/UserLayout';
 import RecruiterJobPostForm from '../pages/RecruiterPages/RecruiterJobPostForm';
 import RecruiterJobLists from '../pages/RecruiterPages/RecruiterJobLists';
+import RecruiterDashboard from '../pages/RecruiterPages/RecruiterDashboard';
 
 function MainRoutes() {
     return (
@@ -17,7 +18,7 @@ function MainRoutes() {
                 <Route
                     path='/recruiter_admin_panel'
                     element={<RecruiterLayout />}>
-                    {/* <Route index element={<RecruiterDashboard />} /> */}
+                    <Route index element={<RecruiterDashboard />} />
                     <Route
                         path='JobPostForm'
                         element={<RecruiterJobPostForm />}
