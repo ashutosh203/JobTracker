@@ -25,6 +25,7 @@ export const JobContextProvider = ({
     const [recruiterErrors, setRecruiterErrors] = useState({
         ...initialFormState,
     });
+    const [jobsData, setJobsData] = useState({});
     return (
         <JobContext.Provider
             value={{
@@ -33,6 +34,8 @@ export const JobContextProvider = ({
                 recruiterErrors,
                 setRecruiterErrors,
                 initialFormState,
+                jobsData,
+                setJobsData,
             }}>
             {children}
         </JobContext.Provider>

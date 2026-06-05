@@ -5,6 +5,7 @@ import DefaultLayout from '../layouts/DefaultLayout';
 import RecruiterLayout from '../layouts/RecruiterLayout';
 import UserLayout from '../layouts/UserLayout';
 import RecruiterJobPostForm from '../pages/RecruiterPages/RecruiterJobPostForm';
+import RecruiterJobLists from '../pages/RecruiterPages/RecruiterJobLists';
 
 function MainRoutes() {
     return (
@@ -21,7 +22,9 @@ function MainRoutes() {
                         path='JobPostForm'
                         element={<RecruiterJobPostForm />}
                     />
+                    <Route path='jobList' element={ <RecruiterJobLists/>} />
                 </Route>
+                {/* this is  a UserLayout */}
                 <Route path='/jobs' element={<UserLayout />} />
             </Routes>
         </>

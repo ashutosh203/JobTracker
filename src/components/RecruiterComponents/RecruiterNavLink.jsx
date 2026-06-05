@@ -8,6 +8,10 @@ const RecruiterNavLink = () => {
             link: '/recruiter_admin_panel/JobPostForm',
         },
         {
+            name: 'job lists',
+            link: '/recruiter_admin_panel/jobList',
+        },
+        {
             name: 'Applicants',
             link: '#',
         },
@@ -31,6 +35,7 @@ const RecruiterNavLink = () => {
             transition-all
             duration-300
             border
+            capitalize
             ${
                 isActive
                     ? 'bg-blue-600 text-white border-blue-600 shadow-md'

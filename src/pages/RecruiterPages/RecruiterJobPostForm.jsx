@@ -8,6 +8,8 @@ import {
 } from '../../utils/recruitersHelpersFunction';
 import { RefreshCcw } from 'lucide-react';
 import { recruiterFields } from '../../utils/recruiterFields';
+import { Undo2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const RecruiterJobPostForm = memo(() => {
     const {
@@ -20,9 +22,20 @@ const RecruiterJobPostForm = memo(() => {
     const isFormValid = Object.values(recruiterErrors).every(
         (error) => error === '',
     );
+    const navigate = useNavigate();
     return (
-        <div className='w-full flex justify-center py-8 px-4 bg-gray-100'>
-            <form className='w-full max-w-5xl bg-white border border-gray-200 rounded-2xl p-6 shadow-lg'>
+        <div className='w-full flex justify-center py-10 px-4 flex-wrap bg-gray-100 relative'>
+            <div className='absolute top-1 right-6'>
+                <button
+                    className='flex items-center gap-2 px-3.5 py-1.5 border cursor-pointer border-gray-200 rounded-full shadow-sm hover:shadow-md bg-gray-50 transition-all duration-300'
+                    onClick={() => navigate(-1)}>
+                    <Undo2 size={18} className='text-gray-700' />
+                    <span className='text-sm font-medium text-gray-700'>
+                        Back
+                    </span>
+                </button>
+            </div>
+            <form className='w-full max-w-5xl bg-white border border-gray-200 rounded-2xl p-4 shadow-lg'>
                 <h2 className='text-center text-3xl font-bold text-gray-800 mb-8 relative'>
                     New Job Post
                     <RefreshCcw
