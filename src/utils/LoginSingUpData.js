@@ -18,6 +18,11 @@ export const CandidateDetails = {
         password: '',
         error: '',
     },
+    PasswordVerified: {
+        VerifiedPassword: '',
+        error : ""
+    },
+    otp: '',
 };
 
 export const RecruiterDetails = {

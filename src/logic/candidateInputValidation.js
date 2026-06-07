@@ -104,3 +104,14 @@ const ValidationName = (event, setCandidateData) => {
 };
 
 export { ValidationName };
+
+export const buttonDisabled = (candidateData) => {
+     return !(
+        candidateData.FullName.name.trim() &&
+        candidateData.Email.mail.trim() &&
+        candidateData.PhoneNumber.number.trim() &&
+        candidateData.FullName.error === '' &&
+        candidateData.Email.error === '' &&
+        candidateData.PhoneNumber.error === ''
+    );
+};

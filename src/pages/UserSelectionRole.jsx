@@ -1,19 +1,25 @@
 /** @format */
-import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import JobContext from '../context/JobContext';
+import { useNavigate } from 'react-router-dom';
 
 const UserSelectionRole = () => {
     const { candidateData, setCandidateData } = useContext(JobContext);
 
     const Navigate = useNavigate();
-
+    // this logic is line no: 52 & 70.
     const onchange = (event) => {
-        setCandidateData((prev) => ({
-            ...prev,
-            [event.target.name]: event.target.value,
-        }));
+        console.log(event.target.value);
+        const { value } = event.target;
+        setCandidateData((prev) => {
+            const updated = {
+                ...prev,
+                role: value,
+            };
+            return updated;
+        });
     };
+    // this logic is line no: 45.
     const handler = (event) => {
         event.preventDefault();
         if (candidateData.role === 'candidate') {
@@ -22,7 +28,12 @@ const UserSelectionRole = () => {
             Navigate('/ReSingUp');
         }
     };
-
+    useEffect(() => {
+        (() => {
+            setCandidateData((prev) => ({ ...prev, role: '' }));
+        })();
+    }, [setCandidateData]);
+    useEffect(() => console.log(candidateData), [candidateData]);
     return (
         <div className='min-h-screen flex items-center justify-center bg-gray-100 px-4'>
             <div className='w-full max-w-md bg-white rounded-2xl shadow-sm border p-8'>
@@ -42,7 +53,7 @@ const UserSelectionRole = () => {
                             name='role'
                             value='candidate'
                             className='w-4 h-4'
-                            onChange={onchange}
+                            onChange={(event) => onchange(event)}
                         />
                         <div>
                             <h3 className='font-medium text-gray-800'>
@@ -60,7 +71,7 @@ const UserSelectionRole = () => {
                             name='role'
                             value='recruiter'
                             className='w-4 h-4'
-                            onChange={onchange}
+                            onChange={(event) => onchange(event)}
                         />
                         <div>
                             <h3 className='font-medium text-gray-800'>

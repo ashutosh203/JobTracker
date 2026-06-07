@@ -26,6 +26,7 @@ export const JobContextProvider = ({ children }) => {
                 initialFormState,
                 jobsData,
                 setJobsData,
+                CandidateDetails,
             }}>
             {children}
         </JobContext.Provider>
