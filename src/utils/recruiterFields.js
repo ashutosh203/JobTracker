@@ -1,6 +1,21 @@
 /** @format */
 import { v4 as uuidv4 } from 'uuid';
 
+
+const initialFormState = {
+    companyName: '',
+    JobTitle: '',
+    Location: '',
+    JobType: '',
+    IndustryType: '',
+    Established: '',
+    Organization: '',
+    PerksBenefits: '',
+    JobDetails: '',
+};
+
+
+
 const recruiterFields = [
     {
         name: 'companyName',
@@ -52,4 +67,4 @@ const recruiterFields = [
     },
 ];
 
-export { recruiterFields };
+export { recruiterFields, initialFormState };

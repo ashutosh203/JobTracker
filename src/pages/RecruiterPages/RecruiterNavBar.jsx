@@ -14,9 +14,10 @@ const RecruiterNavBar = () => {
     return (
         <nav className='flex items-center justify-between border-slate-700 px-4 md:px-8 h-12 md:h-16 shadow-2xs'>
             {/* Logo */}
-            <JobTrackerLogo />
+            <JobTrackerLogo path='/recruiter_admin_panel' />
             {/* Right Side */}
-            <div className='md:flex items-center justify-center gap-3 hidden '>
+            <div className='md:flex items-center justify-center gap-3 hidden'>
+                {/* this is a Recruiter profile icon */}
                 <button
                     onClick={() => navigate('/recruiter_admin_panel/profile')}
                     className='px-3 py-1.5 rounded-lg text-cyan-400 hover:scale-110 transition-all cursor-pointer ease-in-out duration-150 shadow-cyan-500/20 shadow-2xs bg-cyan-100/20'>
@@ -71,7 +72,7 @@ const RecruiterNavBar = () => {
                             Applicants
                         </Link>
                         <button className='text-center w-full relative px-1 py-1.5 rounded-lg bg-red-500/80 text-black-600 border-red-500/30 flex items-center'>
-                            <LogOut className= "relative left-2/5" size={20} />
+                            <LogOut className='relative left-2/5' size={20} />
                         </button>
                     </div>
                 </div>

@@ -6,17 +6,13 @@ function DefaultLayout() {
     return (
         <>
             <section>
-                <header>
+                <header
+                    className={`sticky bg-gray-100 top-0 z-50 left-0 w-full shadow-md`}>
                     <DefaultNavBar />
                 </header>
 
-                <main>
-                    <div>
-                        <p>list</p>
-                    </div>
-                    <div>
-                        <Outlet />
-                    </div>
+                <main className='w-full min-h-screen'>
+                    <Outlet />
                 </main>
 
                 <footer>

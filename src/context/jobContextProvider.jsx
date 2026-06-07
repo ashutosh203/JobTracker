@@ -2,19 +2,10 @@
 
 import { useState } from 'react';
 import JobContext from './JobContext';
+import { initialFormState } from '../utils/recruiterFields';
+import { CandidateDetails } from '../utils/LoginSingUpData';
 
 export const JobContextProvider = ({ children }) => {
-    const initialFormState = {
-        companyName: '',
-        JobTitle: '',
-        Location: '',
-        JobType: '',
-        IndustryType: '',
-        Established: '',
-        Organization: '',
-        PerksBenefits: '',
-        JobDetails: '',
-    };
     const [recruiterInputField, setRecruiterInputField] = useState({
         ...initialFormState,
     });
@@ -22,9 +13,12 @@ export const JobContextProvider = ({ children }) => {
         ...initialFormState,
     });
     const [jobsData, setJobsData] = useState([]);
+    const [candidateData, setCandidateData] = useState({ ...CandidateDetails });
     return (
         <JobContext.Provider
             value={{
+                candidateData,
+                setCandidateData,
                 recruiterInputField,
                 setRecruiterInputField,
                 recruiterErrors,
