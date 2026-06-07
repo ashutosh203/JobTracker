@@ -1,7 +1,19 @@
 /** @format */
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import JobContext from '../context/JobContext';
+import { ValidationName } from '../logic/candidateInputValidation';
 const SingUpPage = () => {
+    const { candidateData, setCandidateData } = useContext(JobContext);
     const Navigate = useNavigate();
+    useEffect(
+        () =>
+            console.log(
+                candidateData['PhoneNumber']?.number,
+                candidateData['PhoneNumber']?.error,
+            ),
+        [candidateData],
+    );
     return (
         <div className='min-h-screen flex items-center justify-center bg-gray-100 p-4'>
             <div className='w-full max-w-md bg-white rounded-2xl shadow-sm border p-6'>
@@ -13,7 +25,9 @@ const SingUpPage = () => {
                         Join JobTracker and start applying for jobs.
                     </p>
                 </div>
-
+                {candidateData['FullName'].error && (
+                    <span>{candidateData['FullName'].error}</span>
+                )}
                 <form className='space-y-4'>
                     <div>
                         <label className='block text-sm font-medium text-gray-700 mb-1'>
@@ -21,6 +35,11 @@ const SingUpPage = () => {
                         </label>
                         <input
                             type='text'
+                            onChange={(event) =>
+                                ValidationName(event, setCandidateData)
+                            }
+                            name={'candidateFullName'}
+                            value={candidateData['FullName'].name}
                             placeholder='Enter your full name'
                             className='w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500'
                         />
@@ -32,6 +51,11 @@ const SingUpPage = () => {
                         </label>
                         <input
                             type='email'
+                            onChange={(event) =>
+                                ValidationName(event, setCandidateData)
+                            }
+                            name='Email'
+                            value={candidateData['Email'].mail}
                             placeholder='Enter your email'
                             className='w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500'
                         />
@@ -42,6 +66,11 @@ const SingUpPage = () => {
                             Phone Number
                         </label>
                         <input
+                            onChange={(event) =>
+                                ValidationName(event, setCandidateData)
+                            }
+                            name={'PhoneNumber'}
+                            value={candidateData['PhoneNumber'].number}
                             type='tel'
                             placeholder='Enter your phone number'
                             className='w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500'
@@ -87,7 +116,6 @@ const SingUpPage = () => {
                 </p>
             </div>
         </div>
-
     );
 };
 

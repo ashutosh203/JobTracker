@@ -2,10 +2,22 @@
 
 export const CandidateDetails = {
     role: '',
-    fullName: '',
-    email: '',
-    PhoneNumber: '',
-    password: '',
+    FullName: {
+        name: '',
+        error: '',
+    },
+    Email: {
+        mail: '',
+        error: '',
+    },
+    PhoneNumber: {
+        number: '',
+        error: '',
+    },
+    Password: {
+        password: '',
+        error: '',
+    },
 };
 
 export const RecruiterDetails = {
