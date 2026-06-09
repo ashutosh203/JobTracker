@@ -24,7 +24,7 @@ function MainRoutes() {
                     <Route index element={<CandidateJobCardList />} />
                     <Route path='jobDetail' element={<CandidateJobDetails />} />
                     <Route path='user&role' element={<UserSelectionRole />} />
-                    <Route path='SingUp' element={<SingUpPage />} />
+                    <Route path='SingUp/:role' element={<SingUpPage />} />
                     <Route path='ReSingUp' element={<RecruiterSignup />} />
                     <Route path='login' element={<LogInPage />} />
                 </Route>

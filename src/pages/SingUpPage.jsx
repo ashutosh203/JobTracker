@@ -1,275 +1,186 @@
 /** @format */
-import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import JobContext from '../context/JobContext';
-import {
-    buttonDisabled,
-    ValidationName,
-} from '../logic/candidateInputValidation';
+import { useNavigate, useParams } from 'react-router-dom';
 import sandOtp from '../service/sandOtp';
 import verifyEmailOtp from '../service/verifyEmailOtp';
+import { CandidateCreateAccount } from '../service/CandidateCreateAccount';
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import CandidateInputFormLabel from '../components/CandidateComponents/CandidateSingUpAllComponents/CandidateInputFormLabel';
+import { candidateInputValidation } from '../logic/candidateInputValidation';
+import CandidateErrorShowInForm from '../components/CandidateComponents/CandidateSingUpAllComponents/CandidateErrorShowInForm';
 const SingUpPage = () => {
-    const { candidateData, setCandidateData } = useContext(JobContext);
-    const Navigate = useNavigate();
-    const [responseData, setResponseData] = useState({
-        errorMessage: '',
-        successMessage: '',
-        verified: false,
-    });
-    const [toggle, setToggle] = useState({ value: false, on: 'Off' });
+ const { role } = useParams();
+ const Navigate = useNavigate();
 
-    useEffect(() => {
-        (() => {
-            setToggle((prev) => ({
-                ...prev,
-                value: buttonDisabled(candidateData),
-            }));
-        })();
-    }, [candidateData]);
-    useEffect(() => {
-        if (candidateData.role === '') {
-            Navigate('/user&role');
-        } else {
-            setCandidateData((prev) => ({
-                ...prev,
-                FullName: {
-                    name: '',
-                    error: '',
-                },
-                Email: {
-                    mail: '',
-                    error: '',
-                },
-                PhoneNumber: {
-                    number: '',
-                    error: '',
-                },
-            }));
-        }
-    }, [candidateData.role, Navigate, setCandidateData]);
-    useEffect(
-        () => console.log(candidateData.Email.mail, candidateData.Email.error),
-        [candidateData.Email.mail, candidateData.Email.error],
-    );
-    return (
-        <div className='min-h-screen flex items-center justify-center bg-gray-100 p-4'>
-            <div className='w-full max-w-md bg-white rounded-2xl shadow-sm border p-6'>
-                <div className='mb-6 text-center'>
-                    <h1 className='text-2xl font-bold text-gray-800'>
-                        Create Account
-                    </h1>
-                    <p className='text-sm text-gray-500 mt-2'>
-                        Join JobTracker and start applying for jobs.
-                    </p>
-                </div>
+ const {
+  register,
+  handleSubmit,
+  trigger,
+  getValues,
+  watch,
+  formState: { errors },
+ } = useForm({
+  mode: 'onChange',
+ });
 
-                <form
-                    className='space-y-4'
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                    }}>
-                    {/* Full Name */}
-                    <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>
-                            Full Name
-                        </label>
+ const [response, setResponse] = useState({ message: '', toggle: false });
 
-                        <input
-                            type='text'
-                            onChange={(event) =>
-                                ValidationName(event, setCandidateData)
-                            }
-                            disabled={toggle.on === 'on' ? true : false}
-                            name='candidateFullName'
-                            value={candidateData.FullName.name}
-                            placeholder='Enter your full name'
-                            className={`w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 ${
-                                candidateData.FullName.error
-                                    ? 'border-red-500'
-                                    : 'border-gray-300'
-                            }`}
-                        />
+ const onSubmit = (data) => {
+  console.log(data);
 
-                        {candidateData.FullName.error && (
-                            <p className='mt-1 text-sm text-red-500'>
-                                {candidateData.FullName.error}
-                            </p>
-                        )}
-                    </div>
+  if (!response.toggle) {
+   const value = getValues(['Email', 'otp']);
+   verifyEmailOtp(event, value, setResponse);
+  } else {
+   console.log('create Account', data);
+   data.role = role;
+   CandidateCreateAccount(data);
+   Navigate('/');
+  }
+ };
+ // eslint-disable-next-line react-hooks/incompatible-library
+ const optValue = watch('otp');
 
-                    {/* Email */}
-                    <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>
-                            Email Address
-                        </label>
+ return (
+  <div className='min-h-screen flex items-center justify-center bg-gray-100 p-4'>
+   <div className='w-full max-w-md bg-white rounded-2xl shadow-sm border p-6'>
+    <div className='mb-6 text-center'>
+     <h1 className='text-2xl font-bold text-gray-800'>Create Account</h1>
+     <p className='text-sm text-gray-500 mt-2'>
+      Join JobTracker and start applying for jobs.
+     </p>
+    </div>
 
-                        <input
-                            disabled={toggle.on === 'on' ? true : false}
-                            type='email'
-                            onChange={(event) =>
-                                ValidationName(event, setCandidateData)
-                            }
-                            name='Email'
-                            value={candidateData.Email.mail}
-                            placeholder='Enter your email'
-                            className={`w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 ${
-                                candidateData.Email.error
-                                    ? 'border-red-500'
-                                    : 'border-gray-300'
-                            }`}
-                        />
+    <form className='space-y-4' onSubmit={handleSubmit(onSubmit)}>
+     {/* CandidateFull Name */}
+     <div>
+      <CandidateInputFormLabel label={'Full Name'} />
 
-                        {candidateData.Email.error && (
-                            <p className='mt-1 text-sm text-red-500'>
-                                {candidateData.Email.error}
-                            </p>
-                        )}
-                    </div>
+      <input
+       {...register('FullName', candidateInputValidation.FullName)}
+       type='text'
+       placeholder='Enter your full name: AshuTheCoder'
+       className={`w-full px-4 py-2 border rounded-lg outline-none focus:ring-2  ${errors.FullName ? 'border-red-500 focus:ring-red-400' : 'border-gray-300 focus:ring-blue-500'}`}
+      />
+      <CandidateErrorShowInForm errors={errors} Name={'FullName'} />
+     </div>
 
-                    {/* Phone Number */}
-                    <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>
-                            Phone Number
-                        </label>
+     {/* Email */}
+     <div>
+      <CandidateInputFormLabel label={'Email Address'} />
+      <input
+       {...register('Email', candidateInputValidation.Email)}
+       type='email'
+       placeholder='Enter your email'
+       className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2  $${
+        errors.Email
+         ? 'border-red-500 focus:ring-red-400'
+         : 'border-gray-300 focus:ring-blue-500'
+       }`}
+      />
+      <CandidateErrorShowInForm errors={errors} Name={'Email'} />
+     </div>
+     {/* Phone Number */}
+     <div>
+      <CandidateInputFormLabel label={'Phone Number'} />
+      <input
+       type='tel'
+       {...register('PhoneNumber', candidateInputValidation.PhoneNumber)}
+       placeholder='Enter your phone number'
+       className={`w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 ${'border-gray-300'}`}
+      />
 
-                        <input
-                            disabled={toggle.on === 'on' ? true : false}
-                            type='tel'
-                            maxLength={10}
-                            onChange={(event) =>
-                                ValidationName(event, setCandidateData)
-                            }
-                            name='PhoneNumber'
-                            value={candidateData.PhoneNumber.number}
-                            placeholder='Enter your phone number'
-                            className={`w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 ${
-                                candidateData.PhoneNumber.error
-                                    ? 'border-red-500'
-                                    : 'border-gray-300'
-                            }`}
-                        />
+      <CandidateErrorShowInForm errors={errors} Name={'PhoneNumber'} />
+     </div>
+     {/* OTP */}
+     {!response.toggle && (
+      <div>
+       <CandidateInputFormLabel label={' Verify Email'} />
+       <div className='flex items-center gap-3'>
+        <input
+         {...register('otp', candidateInputValidation.otp)}
+         type='tel'
+         maxLength={6}
+         placeholder='Enter OTP'
+         className='flex-1 px-4 py-2.5 border border-gray-300 rounded-xl outline-none transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
+        />
 
-                        {candidateData.PhoneNumber.error && (
-                            <p className='mt-1 text-sm text-red-500'>
-                                {candidateData.PhoneNumber.error}
-                            </p>
-                        )}
-                    </div>
+        <button
+         type='button'
+         className={`px-5 py-2.5 text-white font-medium rounded-xl transition ${'bg-blue-600 hover:bg-blue-700'}`}
+         onClick={async (event) => {
+          const isValid = await trigger(['FullName', 'Email', 'PhoneNumber']);
+          if (!isValid) {
+           return;
+          }
+          const values = getValues(['FullName', 'Email', 'PhoneNumber']);
+          values.unshift(role);
+          sandOtp(event, values, setResponse);
+         }}>
+         Send
+        </button>
+       </div>
 
-                    {/* OTP */}
-                    {!toggle.verified && (
-                        <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-2'>
-                                Verify Email
-                            </label>
+       <p
+        className={`mt-2 text-xs ${errors.otp ? 'text-red-500' : 'text-gray-950 '}`}>
+        {errors.otp ? errors.otp.message : response.message}
+       </p>
+      </div>
+     )}
+     {response.toggle && (
+      <div>
+       <CandidateInputFormLabel label={' Password'} />
+       <input
+        {...register('password', candidateInputValidation.password)}
+        maxLength={5}
+        type='password'
+        placeholder='Confirm password'
+        className='w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500'
+       />
+       <p
+        className={`mt-2 text-xs ${errors.password ? 'text-red-500' : 'text - gray - 800'}`}>
+        {errors.password ? errors.password.message : ''}
+       </p>
+      </div>
+     )}
+     {response.toggle && (
+      <div>
+       <CandidateInputFormLabel label={'  Confirm Password'} />
+       <input
+        maxLength={5}
+        {...register(
+         'ConfirmPassword',
+         candidateInputValidation.ConfirmPassword(watch),
+        )}
+        type='password'
+        placeholder='Confirm password'
+        className='w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500'
+       />
 
-                            <div className='flex items-center gap-3'>
-                                <input
-                                    disabled={toggle.on === 'on' ? true : false}
-                                    type='text'
-                                    maxLength={6}
-                                    placeholder='Enter OTP'
-                                    className='flex-1 px-4 py-2.5 border border-gray-300 rounded-xl outline-none transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
-                                    value={candidateData.otp}
-                                    onChange={(event) => {
-                                        console.log(event.target.value);
-                                        setCandidateData((prev) => ({
-                                            ...prev,
-                                            otp: event.target.value,
-                                        }));
-                                    }}
-                                />
-
-                                <button
-                                    onClick={(event) =>
-                                        sandOtp(
-                                            event,
-                                            candidateData,
-                                            setResponseData,
-                                        )
-                                    }
-                                    type='button'
-                                    disabled={toggle.value}
-                                    className={`px-5 py-2.5 text-white font-medium rounded-xl transition ${
-                                        toggle.value
-                                            ? 'bg-gray-400 cursor-not-allowed'
-                                            : 'bg-blue-600 hover:bg-blue-700'
-                                    }`}>
-                                    Send
-                                </button>
-                            </div>
-
-                            <p className='mt-2 text-xs text-gray-800'>
-                                {responseData.errorMessage ||
-                                    responseData.successMessage ||
-                                    'Enter the 6-digit OTP'}
-                            </p>
-                        </div>
-                    )}
-
-                    {toggle.verified && (
-                        <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>
-                                Password
-                            </label>
-                            <input
-                                maxLength={5}
-                                type='password'
-                                placeholder='Confirm password'
-                                className='w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500'
-                            />
-                        </div>
-                    )}
-                    {toggle.verified && (
-                        <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>
-                                Confirm Password
-                            </label>
-                            <input
-                                maxLength={5}
-                                type='password'
-                                placeholder='Confirm password'
-                                className='w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500'
-                            />
-                        </div>
-                    )}
-
-                    <button
-                        disabled={toggle.on === 'on' ? true : false}
-                        type='submit'
-                        disabled={toggle.value}
-                        onClick={async (event) => {
-                            await verifyEmailOtp(
-                                event,
-                                candidateData,
-                                setToggle,
-                            );
-                        }}
-                        className={`w-full py-2.5 text-white rounded-lg transition ${
-                            toggle.value
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-blue-600 hover:bg-blue-700'
-                        }`}>
-                        {toggle.on === 'on'
-                            ? 'Verifying OTP'
-                            : toggle.on === 'Off'
-                              ? 'Verify Email'
-                              : toggle.verified === false
-                                ? 'Create Account'
-                                : 'Creating Account'}
-                    </button>
-                </form>
-                <p className='text-center text-sm text-gray-600 mt-5'>
-                    Already have an account?{' '}
-                    <button
-                        onClick={() => Navigate('/login')}
-                        className='text-blue-600 font-medium hover:underline'>
-                        Login
-                    </button>
-                </p>
-            </div>
-        </div>
-    );
+       <p
+        className={`mt-2 text-xs ${errors.ConfirmPassword ? 'text-red-500' : 'text - gray - 800'}`}>
+        {errors.ConfirmPassword ? errors.ConfirmPassword.message : ''}
+       </p>
+      </div>
+     )}
+     {
+      <button
+       type='submit'
+       disabled={optValue?.length !== 6}
+       className={`w-full capitalize py-2.5 text-white rounded-lg transition ${optValue?.length !== 6 ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'}`}>
+       {response.toggle ? 'Create Account' : 'verify Email'}
+      </button>
+     }
+    </form>
+    <p className='text-center text-sm text-gray-600 mt-5'>
+     Already have an account?{' '}
+     <button className='text-blue-600 font-medium hover:underline'>
+      Login
+     </button>
+    </p>
+   </div>
+  </div>
+ );
 };
 
 export default SingUpPage;

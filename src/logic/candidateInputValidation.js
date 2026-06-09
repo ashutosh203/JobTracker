@@ -1,117 +1,92 @@
-/** @format */
+export const candidateInputValidation = {
+ FullName: {
+  required: 'Name is required',
+  maxLength: {
+   value: 25,
+   message: 'Name should be between 3 and 30 characters',
+  },
+  minLength: {
+   value: 3,
+   message: 'Name should be between 3 and 30 characters',
+  },
+  pattern: {
+   value: /^[a-zA-Z\s]+$/,
+   message: 'Name should contain only letters and spaces',
+  },
+  validate: (value) => (value && value.trim() !== '') || 'Name is required',
+ },
+ Email: {
+  required: 'Email is required',
+  pattern: {
+   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+   message: 'Invalid email format',
+  },
+  validate: (value) => (value && value.trim() !== '') || 'Email is required',
+ },
 
-const ValidationName = (event, setCandidateData) => {
-    const { name, value } = event.target;
+ PhoneNumber: {
+  required: 'Phone Number is required',
+  pattern: {
+   value: /^\d{10}$/,
+   message: 'Invalid phone number format',
+  },
+  validate: (value) =>
+   (value && value.trim() !== '') || 'Phone Number is required',
+  maxLength: {
+   value: 10,
+   message: 'Phone number is max-10 digit',
+  },
+ },
 
-    switch (name) {
-        case 'candidateFullName':
-            if (value.trim() === '') {
-                setCandidateData((prevData) => ({
-                    ...prevData,
-                    FullName: {
-                        name: value,
-                        error: 'name is required',
-                    },
-                }));
-            } else if (!/^[a-zA-Z\s]+$/.test(value)) {
-                setCandidateData((prevData) => ({
-                    ...prevData,
-                    FullName: {
-                        name: value,
-                        error: 'only letters and spaces',
-                    },
-                }));
-            } else if (value.length < 3 || value.length > 30) {
-                setCandidateData((prevData) => ({
-                    ...prevData,
-                    FullName: {
-                        name: value,
-                        error: 'Name should be between 3 and 30 characters',
-                    },
-                }));
-            } else {
-                setCandidateData((prevData) => ({
-                    ...prevData,
-                    FullName: {
-                        name: value,
-                        error: '',
-                    },
-                }));
-            }
+ otp: {
+  minLength: {
+   value: 6,
+   message: 'OTP must be 6 digits',
+  },
+  maxLength: {
+   value: 6,
+   message: 'OTP must be 6 digits',
+  },
+  pattern: {
+   value: /^[0-9]+$/,
+   message: 'Only numbers allowed',
+  },
+ },
 
-            break;
-        case 'Email':
-            if (value.trim() === '') {
-                setCandidateData((prevData) => ({
-                    ...prevData,
-                    Email: {
-                        mail: value,
-                        error: 'Email is required',
-                    },
-                }));
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                setCandidateData((prevData) => ({
-                    ...prevData,
-                    Email: {
-                        mail: value,
-                        error: 'Invalid email format',
-                    },
-                }));
-            } else {
-                setCandidateData((prevData) => ({
-                    ...prevData,
-                    Email: {
-                        mail: value,
-                        error: '',
-                    },
-                }));
-            }
-
-            break;
-        case 'PhoneNumber':
-            if (value.trim() === '') {
-                setCandidateData((prevData) => ({
-                    ...prevData,
-                    PhoneNumber: {
-                        number: value,
-                        error: 'Phone Number is required',
-                    },
-                }));
-            } else if (!/^\d{10}$/.test(value)) {
-                setCandidateData((prevData) => ({
-                    ...prevData,
-                    PhoneNumber: {
-                        number: value,
-                        error: 'Invalid phone number format',
-                    },
-                }));
-            } else {
-                setCandidateData((prevData) => ({
-                    ...prevData,
-                    PhoneNumber: {
-                        number: value,
-                        error: '',
-                    },
-                }));
-            }
-
-            break;
-        case 'Password':
-            break;
-        default:
-            break;
-    }
+ password: {
+  required: 'Password is required',
+  validate: (value) => (value && value.trim() !== '') || 'Password is required',
+  maxLength: {
+   value: 5,
+   message: 'Password must be 5 Digit',
+  },
+  minLength: {
+   value: 5,
+   message: 'Password must be 5 Digit',
+  },
+  pattern: {
+   value: /^[0-9]+$/,
+   message: 'Only numbers allowed',
+  },
+ },
+ ConfirmPassword(watch) {
+  return {
+   required: 'Enter your password',
+   validate: (value) =>
+    value.trim() !== '' && watch('password') === value
+     ? true
+     : 'password is not match',
+  };
+ },
+ async sand(trigger, getValues, role, sandOtp, setResponse) {
+  const isValid = await trigger(['FullName', 'Email', 'PhoneNumber']);
+  if (!isValid) {
+   return;
+  }
+  const values = getValues(['FullName', 'Email', 'PhoneNumber']);
+  values.unshift(role);
+  sandOtp(event, values, setResponse);
+ },
 };
 
-export { ValidationName };
-
-export const buttonDisabled = (candidateData) => {
-     return !(
-        candidateData.FullName.name.trim() &&
-        candidateData.Email.mail.trim() &&
-        candidateData.PhoneNumber.number.trim() &&
-        candidateData.FullName.error === '' &&
-        candidateData.Email.error === '' &&
-        candidateData.PhoneNumber.error === ''
-    );
-};
+// 196

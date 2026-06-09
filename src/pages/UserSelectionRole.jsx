@@ -1,39 +1,30 @@
 /** @format */
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import JobContext from '../context/JobContext';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 const UserSelectionRole = () => {
-    const { candidateData, setCandidateData } = useContext(JobContext);
+    const {setCandidateData } = useContext(JobContext);
+    const Navigate = useNavigate()
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        defaultValues: {
+            role: '',
+        },
+    });
 
-    const Navigate = useNavigate();
-    // this logic is line no: 52 & 70.
-    const onchange = (event) => {
-        console.log(event.target.value);
-        const { value } = event.target;
-        setCandidateData((prev) => {
-            const updated = {
-                ...prev,
-                role: value,
-            };
-            return updated;
-        });
-    };
-    // this logic is line no: 45.
-    const handler = (event) => {
-        event.preventDefault();
-        if (candidateData.role === 'candidate') {
-            Navigate('/SingUp');
+    const onSubmit = (data) => {
+        setCandidateData((prev) => ({ ...prev, role: data.role }));
+        if (data.role === "candidate") {
+            Navigate(`/SingUp/${data.role}`);
         } else {
             Navigate('/ReSingUp');
-        }
+       }
     };
-    useEffect(() => {
-        (() => {
-            setCandidateData((prev) => ({ ...prev, role: '' }));
-        })();
-    }, [setCandidateData]);
-    useEffect(() => console.log(candidateData), [candidateData]);
     return (
         <div className='min-h-screen flex items-center justify-center bg-gray-100 px-4'>
             <div className='w-full max-w-md bg-white rounded-2xl shadow-sm border p-8'>
@@ -46,14 +37,20 @@ const UserSelectionRole = () => {
                     </p>
                 </div>
 
-                <form onSubmit={handler} className='space-y-4'>
+                <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+                    {errors.role && (
+                        <p className='text-red-500 text-sm mb-4'>
+                            {errors.role.message}
+                        </p>
+                    )}
                     <label className='flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:border-blue-500 transition'>
                         <input
                             type='radio'
-                            name='role'
+                            {...register('role', {
+                                required: 'name is required',
+                            })}
                             value='candidate'
                             className='w-4 h-4'
-                            onChange={(event) => onchange(event)}
                         />
                         <div>
                             <h3 className='font-medium text-gray-800'>
@@ -68,10 +65,11 @@ const UserSelectionRole = () => {
                     <label className='flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:border-blue-500 transition'>
                         <input
                             type='radio'
-                            name='role'
+                            {...register('role', {
+                                required: 'Please select a role to continue',
+                            })}
                             value='recruiter'
                             className='w-4 h-4'
-                            onChange={(event) => onchange(event)}
                         />
                         <div>
                             <h3 className='font-medium text-gray-800'>

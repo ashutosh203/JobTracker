@@ -2,26 +2,10 @@
 
 export const CandidateDetails = {
     role: '',
-    FullName: {
-        name: '',
-        error: '',
-    },
-    Email: {
-        mail: '',
-        error: '',
-    },
-    PhoneNumber: {
-        number: '',
-        error: '',
-    },
-    Password: {
-        password: '',
-        error: '',
-    },
-    PasswordVerified: {
-        VerifiedPassword: '',
-        error : ""
-    },
+    FullName: '',
+    Email: '',
+    PhoneNumber: '',
+    Password: '',
     otp: '',
 };
 
