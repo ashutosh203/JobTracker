@@ -4,14 +4,15 @@ import sandOtp from '../service/sandOtp';
 import verifyEmailOtp from '../service/verifyEmailOtp';
 import { CandidateCreateAccount } from '../service/CandidateCreateAccount';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import CandidateInputFormLabel from '../components/CandidateComponents/CandidateSingUpAllComponents/CandidateInputFormLabel';
 import { candidateInputValidation } from '../logic/candidateInputValidation';
 import CandidateErrorShowInForm from '../components/CandidateComponents/CandidateSingUpAllComponents/CandidateErrorShowInForm';
+import JobContext from '../context/JobContext';
 const SingUpPage = () => {
  const { role } = useParams();
  const Navigate = useNavigate();
-
+ const { setCandidateToken } = useContext(JobContext);
  const {
   register,
   handleSubmit,
@@ -34,7 +35,7 @@ const SingUpPage = () => {
   } else {
    console.log('create Account', data);
    data.role = role;
-   CandidateCreateAccount(data);
+   CandidateCreateAccount(data, setCandidateToken);
    Navigate('/');
   }
  };

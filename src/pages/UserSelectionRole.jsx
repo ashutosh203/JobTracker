@@ -22,7 +22,7 @@ const UserSelectionRole = () => {
         if (data.role === "candidate") {
             Navigate(`/SingUp/${data.role}`);
         } else {
-            Navigate('/ReSingUp');
+            Navigate(`/ReSingUp/${data.role}`);
        }
     };
     return (

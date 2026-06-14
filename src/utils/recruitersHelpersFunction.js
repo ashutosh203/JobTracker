@@ -1,179 +1,180 @@
 /** @format */
 
+import { JobCreate } from '../service/JobCreate.service';
+
 export function recruiterInputFieldUpdate(
-    e,
-    setRecruiterInputField,
-    setRecruiterErrors,
+ e,
+ setRecruiterInputField,
+ setRecruiterErrors,
 ) {
-    const { name, value } = e.target;
+ const { name, value } = e.target;
 
-    const error = validation(name, value);
+ const error = validation(name, value);
 
-    setRecruiterErrors((prev) => ({ ...prev, [name]: error }));
+ setRecruiterErrors((prev) => ({ ...prev, [name]: error }));
 
-    setRecruiterInputField((prev) => ({
-        ...prev,
-        [name]: value,
-    }));
+ setRecruiterInputField((prev) => ({
+  ...prev,
+  [name]: value,
+ }));
 }
 
 const validateTextField = (value, fieldName, min = 3, max = 50) => {
-    const trimmedValue = value.trim();
+ const trimmedValue = value.trim();
 
-    if (!trimmedValue) {
-        return `${fieldName} is required`;
-    }
+ if (!trimmedValue) {
+  return `${fieldName} is required`;
+ }
 
-    if (trimmedValue.length < min) {
-        return `${fieldName} must be at least ${min} characters`;
-    }
+ if (trimmedValue.length < min) {
+  return `${fieldName} must be at least ${min} characters`;
+ }
 
-    if (trimmedValue.length > max) {
-        return `${fieldName} must not exceed ${max} characters`;
-    }
+ if (trimmedValue.length > max) {
+  return `${fieldName} must not exceed ${max} characters`;
+ }
 
-    return '';
+ return '';
 };
 
 export function validation(name, value) {
-    switch (name) {
-        case 'companyName': {
-            const error = validateTextField(value, 'Company name', 3, 50);
+ switch (name) {
+  case 'companyName': {
+   const error = validateTextField(value, 'Company name', 3, 50);
 
-            if (error) return error;
+   if (error) return error;
 
-            if (/\d/.test(value)) {
-                return 'Numbers are not allowed';
-            }
+   if (/\d/.test(value)) {
+    return 'Numbers are not allowed';
+   }
 
-            if (!/^[A-Za-z\s&.,()-]+$/.test(value)) {
-                return 'Invalid company name';
-            }
+   if (!/^[A-Za-z\s&.,()-]+$/.test(value)) {
+    return 'Invalid company name';
+   }
 
-            return '';
-        }
+   return '';
+  }
 
-        case 'JobTitle': {
-            const error = validateTextField(value, 'Job title', 3, 50);
+  case 'JobTitle': {
+   const error = validateTextField(value, 'Job title', 3, 50);
 
-            if (error) return error;
+   if (error) return error;
 
-            if (!/^[A-Za-z0-9\s/-]+$/.test(value)) {
-                return 'Only letters, numbers, spaces, / and - are allowed';
-            }
+   if (!/^[A-Za-z0-9\s/-]+$/.test(value)) {
+    return 'Only letters, numbers, spaces, / and - are allowed';
+   }
 
-            return '';
-        }
+   return '';
+  }
 
-        case 'Location': {
-            const error = validateTextField(value, 'Location', 5, 100);
+  case 'Location': {
+   const error = validateTextField(value, 'Location', 5, 100);
 
-            if (error) return error;
+   if (error) return error;
 
-            if (!/^[A-Za-z0-9\s,.-]+$/.test(value)) {
-                return 'Invalid location format';
-            }
+   if (!/^[A-Za-z0-9\s,.-]+$/.test(value)) {
+    return 'Invalid location format';
+   }
 
-            return '';
-        }
+   return '';
+  }
 
-        case 'JobType': {
-            if (!value.trim()) {
-                return 'Job type is required';
-            }
+  case 'JobType': {
+   if (!value.trim()) {
+    return 'Job type is required';
+   }
 
-            return '';
-        }
+   return '';
+  }
 
-        case 'IndustryType': {
-            const error = validateTextField(value, 'Industry type', 3, 50);
+  case 'IndustryType': {
+   const error = validateTextField(value, 'Industry type', 3, 50);
 
-            if (error) return error;
+   if (error) return error;
 
-            if (!/^[A-Za-z\s&/-]+$/.test(value)) {
-                return 'Invalid industry type';
-            }
+   if (!/^[A-Za-z\s&/-]+$/.test(value)) {
+    return 'Invalid industry type';
+   }
 
-            return '';
-        }
+   return '';
+  }
 
-        case 'Established': {
-            if (!value.trim()) {
-                return 'Established year is required';
-            }
+  case 'Established': {
+   if (!value.trim()) {
+    return 'Established year is required';
+   }
 
-            const year = Number(value);
+   const year = Number(value);
 
-            const currentYear = new Date().getFullYear();
+   const currentYear = new Date().getFullYear();
 
-            if (isNaN(year)) {
-                return 'Only numbers allowed';
-            }
+   if (isNaN(year)) {
+    return 'Only numbers allowed';
+   }
 
-            if (year < 1800 || year > currentYear) {
-                return `Year must be between 1800 and ${currentYear}`;
-            }
+   if (year < 1800 || year > currentYear) {
+    return `Year must be between 1800 and ${currentYear}`;
+   }
 
-            return '';
-        }
+   return '';
+  }
 
-        case 'Organization': {
-            if (!value.trim()) {
-                return 'Organization size is required';
-            }
+  case 'Organization': {
+   if (!value.trim()) {
+    return 'Organization size is required';
+   }
 
-            return '';
-        }
+   return '';
+  }
 
-        case 'PerksBenefits': {
-            const error = validateTextField(value, 'Perks & Benefits', 10, 500);
+  case 'PerksBenefits': {
+   const error = validateTextField(value, 'Perks & Benefits', 10, 500);
 
-            if (error) return error;
+   if (error) return error;
 
-            return '';
-        }
+   return '';
+  }
 
-        case 'JobDetails': {
-            const error = validateTextField(value, 'Job details', 20, 3000);
+  case 'JobDetails': {
+   const error = validateTextField(value, 'Job details', 20, 3000);
 
-            if (error) return error;
+   if (error) return error;
 
-            return '';
-        }
+   return '';
+  }
 
-        default:
-            return '';
-    }
+  default:
+   return '';
+ }
 }
 
 export const refresh = (
-    setRecruiterInputField,
-    setRecruiterErrors,
-    initialFormState,
+ setRecruiterInputField,
+ setRecruiterErrors,
+ initialFormState,
 ) => {
-    setRecruiterErrors({
-        ...initialFormState,
-    });
-    setRecruiterInputField({
-        ...initialFormState,
-    });
+ setRecruiterErrors({
+  ...initialFormState,
+ });
+ setRecruiterInputField({
+  ...initialFormState,
+ });
 };
 
-export const recruiterOnsubmitForm = (
-    event,
-    setJobsData,
-    recruiterInputField,
-    recruiterErrors,
-    callBack,
+export const recruiterOnsubmitForm = async (
+ event,
+ recruiterInputField,
+ recruiterErrors,
+ callBack,
 ) => {
-    event.preventDefault();
-    const hasErrors = Object.values(recruiterErrors).some(
-        (error) => error !== '',
-    );
-    if (hasErrors) {
-        console.log('this is some error');
-    } else {
-        setJobsData((prev) => [...prev, { ...recruiterInputField }]);
-        callBack();
-    }
+ event.preventDefault();
+ const hasErrors = await Object.values(recruiterErrors).some(
+  (error) => error !== '',
+ );
+ if (hasErrors) {
+  console.log('this is some error');
+ } else {
+  await JobCreate(recruiterInputField);
+  callBack();
+ }
 };

@@ -1,7 +1,7 @@
 /** @format */
 
 import axios from 'axios';
-export const CandidateCreateAccount =async (data) => {
+export const CandidateCreateAccount = async (data, setCandidateToken) => {
  try {
   const response = await axios.post('http://localhost:45000/createAccount', {
    role: data['role'],
@@ -10,10 +10,8 @@ export const CandidateCreateAccount =async (data) => {
    phone: data['PhoneNumber'],
    password: data['password'],
   });
-
-
-   alert(response.data.message);
-
+  await localStorage.setItem('candidate', response.data?.data.token);
+  await setCandidateToken(localStorage.getItem('candidate'));
  } catch (error) {
   console.log(error);
  }

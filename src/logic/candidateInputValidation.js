@@ -77,7 +77,8 @@ export const candidateInputValidation = {
      ? true
      : 'password is not match',
   };
- },
+   },
+ 
  async sand(trigger, getValues, role, sandOtp, setResponse) {
   const isValid = await trigger(['FullName', 'Email', 'PhoneNumber']);
   if (!isValid) {

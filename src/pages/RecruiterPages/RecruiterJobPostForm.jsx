@@ -19,14 +19,12 @@ const RecruiterJobPostForm = memo(() => {
         setRecruiterErrors,
         recruiterErrors,
         initialFormState,
-        setJobsData,
-        jobsData,
     } = useContext(JobContext);
     const isFormValid = Object.values(recruiterErrors).every(
         (error) => error === '',
     );
 
-    useEffect(() => console.log(jobsData), [jobsData]);
+    useEffect(() => console.log(recruiterInputField), [recruiterInputField]);
     const navigate = useNavigate();
     return (
         <div className='w-full flex justify-center py-10 flex-wrap bg-gray-100 relative px-2.5'>
@@ -41,10 +39,9 @@ const RecruiterJobPostForm = memo(() => {
                 </button>
             </div>
             <form
-                onSubmit={(event) =>
-                    recruiterOnsubmitForm(
+                onSubmit={ async (event) =>
+                  await  recruiterOnsubmitForm(
                         event,
-                        setJobsData,
                         recruiterInputField,
                         recruiterErrors,
                         () => {
@@ -115,6 +112,7 @@ const RecruiterJobPostForm = memo(() => {
 
                 <button
                     disabled={!isFormValid}
+                   
                     type='submit'
                     className={`w-full mt-6 text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-md ${
                         !isFormValid

@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const RecruiterNavBar = () => {
+    
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const closeMenu = () => setIsMenuOpen(false);
@@ -24,10 +25,18 @@ const RecruiterNavBar = () => {
                     <UserRound size={20} />
                 </button>
 
-                <button className='px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400  border-red-500/30 hover:scale-110 transition-all cursor-pointer ease-in-out duration-150 shadow-red-500/20 shadow-2xs'>
+                <button className='px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400  border-red-500/30 hover:scale-110 transition-all cursor-pointer ease-in-out duration-150 shadow-red-500/20 shadow-2xs'
+                
+                    onClick={() => {
+                        localStorage.removeItem("recruiter")
+                        navigate('/')
+                }}
+                >
                     <LogOut size={20} />
                 </button>
             </div>
+
+            {/* this is a phone size */}
             <div className='md:hidden '>
                 <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
