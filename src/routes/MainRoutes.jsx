@@ -16,31 +16,39 @@ import UserSelectionRole from '../pages/UserSelectionRole';
 import RecruiterSignup from '../pages/RecruiterPages/RecruiterSignup';
 import PublicRoute from '../pages/PublicRoute';
 import RecruiterProtectedRoute from '../pages/RecruiterPages/RecruiterProtectedRoute';
+import CandidateRouteGuard from '../pages/CandidatePages/CandidateRouteGuard';
+import ViewJobDetails from '../pages/RecruiterPages/ViewJobDetails';
+import TokenCheck from '../pages/TokenCheck';
 
 function MainRoutes() {
  return (
   <>
    <Routes>
     {/* this is a default page layout */}
-    <Route path='/' element={<DefaultLayout />}>
-     <Route index element={<CandidateJobCardList />} />
-     <Route path='jobDetail' element={<CandidateJobDetails />} />
-    </Route>
-    {/* ------------------------------------------------------------------------------------------- */}
-    <Route element={<PublicRoute />}>
-     <Route path='user&role' element={<UserSelectionRole />} />
-     <Route path='SingUp/:role' element={<SingUpPage />} />
-     <Route path='ReSingUp/:role' element={<RecruiterSignup />} />
-     <Route path='login' element={<LogInPage />} />
-    </Route>
-    {/*---------------------------------------------------------------------------------------------*/}
-    {/* this is a Recruiter Routes */}
-    <Route element={<RecruiterProtectedRoute/>}>
-     <Route path='/recruiter_admin_panel' element={<RecruiterLayout />}>
-      <Route index element={<RecruiterDashboard />} />
-      <Route path='profile' element={<RecruiterProfile />} />
-      <Route path='JobPostForm' element={<RecruiterJobPostForm />} />
-      <Route path='jobList' element={<RecruiterJobLists />} />
+    <Route element={<TokenCheck />}>
+     <Route element={<CandidateRouteGuard />}>
+      <Route path='/' element={<DefaultLayout />}>
+       <Route index element={<CandidateJobCardList />} />
+       <Route path='jobDetail/:id' element={<CandidateJobDetails />} />
+      </Route>
+     </Route>
+     {/* ------------------------------------------------------------------------------------------- */}
+     <Route element={<PublicRoute />}>
+      <Route path='user&role' element={<UserSelectionRole />} />
+      <Route path='SingUp/:role' element={<SingUpPage />} />
+      <Route path='ReSingUp/:role' element={<RecruiterSignup />} />
+      <Route path='login' element={<LogInPage />} />
+     </Route>
+     {/*---------------------------------------------------------------------------------------------*/}
+     {/* this is a Recruiter Routes */}
+     <Route element={<RecruiterProtectedRoute />}>
+      <Route path='/recruiter_admin_panel' element={<RecruiterLayout />}>
+       <Route index element={<RecruiterDashboard />} />
+       <Route path='profile' element={<RecruiterProfile />} />
+       <Route path='JobPostForm' element={<RecruiterJobPostForm />} />
+       <Route path='jobList' element={<RecruiterJobLists />} />
+       <Route path='ViewJobDetails/:id' element={<ViewJobDetails />} />
+      </Route>
      </Route>
     </Route>
    </Routes>

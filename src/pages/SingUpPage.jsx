@@ -1,8 +1,8 @@
 /** @format */
 import { useNavigate, useParams } from 'react-router-dom';
-import sandOtp from '../service/sandOtp';
-import verifyEmailOtp from '../service/verifyEmailOtp';
-import { CandidateCreateAccount } from '../service/CandidateCreateAccount';
+import sandOtp from '../service/sandOtp.service';
+import verifyEmailOtp from '../service/verifyEmailOtp.service';
+import { CandidateCreateAccount } from '../service/CandidateCreateAccount.service';
 import { useForm } from 'react-hook-form';
 import { useContext, useState } from 'react';
 import CandidateInputFormLabel from '../components/CandidateComponents/CandidateSingUpAllComponents/CandidateInputFormLabel';
@@ -27,7 +27,6 @@ const SingUpPage = () => {
  const [response, setResponse] = useState({ message: '', toggle: false });
 
  const onSubmit = (data) => {
-  console.log(data);
 
   if (!response.toggle) {
    const value = getValues(['Email', 'otp']);

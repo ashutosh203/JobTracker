@@ -2,29 +2,29 @@
 import { NavLink } from 'react-router-dom';
 
 const RecruiterNavLink = () => {
-    const links = [
-        {
-            name: 'Post Job',
-            link: '/recruiter_admin_panel/JobPostForm',
-        },
-        {
-            name: 'job lists',
-            link: '/recruiter_admin_panel/jobList',
-        },
-        {
-            name: 'Applicants',
-            link: '#',
-        },
-    ];
+ const links = [
+  {
+   name: 'Post Job',
+   link: '/recruiter_admin_panel/JobPostForm',
+  },
+  {
+   name: 'job lists',
+   link: '/recruiter_admin_panel/jobList',
+  },
+  {
+   name: 'Applicants',
+   link: '#',
+  },
+ ];
 
-    return (
-        <div className='w-full flex flex-col gap-3 p-3 '>
-            {links.map((e) => (
-                <NavLink
-                    key={e.name}
-                    to={e.link}
-                    className={({ isActive }) =>
-                        `
+ return (
+  <div className='w-full flex  flex-col gap-3 p-3 '>
+   {links.map((e) => (
+    <NavLink
+     key={e.name}
+     to={e.link}
+     className={({ isActive }) =>
+      `
             block
             w-full
             text-center
@@ -39,17 +39,17 @@ const RecruiterNavLink = () => {
             border
             capitalize
             ${
-                isActive
-                    ? 'bg-blue-600 text-white border-blue-600 shadow-md'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-400 hover:text-blue-600 hover:scale-[1.02]'
+             isActive
+              ? 'bg-blue-600 text-white border-blue-600 shadow-md'
+              : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-400 hover:text-blue-600 hover:scale-[1.02]'
             }
           `
-                    }>
-                    {e.name}
-                </NavLink>
-            ))}
-        </div>
-    );
+     }>
+     {e.name}
+    </NavLink>
+   ))}
+  </div>
+ );
 };
 
 export default RecruiterNavLink;

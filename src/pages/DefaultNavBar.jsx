@@ -5,7 +5,7 @@ import CandidateNavCenter from '../components/CandidateComponents/CandidateNavCe
 import CandidateNavRightSide from '../components/CandidateComponents/CandidateNavRightSide';
 import JobTrackerLogo from '../components/JobTrackerLogo';
 import { LogOut, Menu } from 'lucide-react';
-import { useContext,  useState } from 'react';
+import { useContext, useState } from 'react';
 import JobContext from '../context/JobContext';
 
 const DefaultNavBar = () => {
@@ -13,7 +13,6 @@ const DefaultNavBar = () => {
  const [isMenuOpen, setIsMenuOpen] = useState(false);
  const closeMenu = () => setIsMenuOpen(false);
  const { candidateToken, setCandidateToken } = useContext(JobContext);
- 
  return (
   <>
    <nav className='sticky top-0 z-50 flex items-center justify-between px-4 md:px-8 lg:px-12 h-16 md:h-18 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm'>
@@ -29,7 +28,7 @@ const DefaultNavBar = () => {
      ) : (
       <button
        className='px-5 md:px-6 py-2 md:py-2.5 rounded-xl bg-linear-to-r from-sky-500 to-blue-600 text-white text-sm font-semibold shadow-lg shadow-sky-500/20 hover:shadow-xl hover:shadow-sky-500/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300'
-       onClick={() => Navigate('/user&role')}>
+       onClick={() => Navigate('/login')}>
        Login / Sign Up
       </button>
      )}

@@ -1,7 +1,7 @@
 /** @format */
 
 import { useEffect, useState } from 'react';
-import { RecruiterProfileData } from '../../service/RecruiterProfileData';
+import { RecruiterProfileData } from '../../service/RecruiterProfileData.service';
 import RecruiterProfileLoader from '../../Loaders/RecruiterProfileLoader';
 
 const RecruiterProfile = () => {

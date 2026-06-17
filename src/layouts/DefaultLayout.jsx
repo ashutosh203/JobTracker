@@ -3,6 +3,7 @@
 import DefaultNavBar from '../pages/DefaultNavBar';
 import { Outlet } from 'react-router-dom';
 function DefaultLayout() {
+    
     return (
         <>
             <section>

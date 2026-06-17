@@ -26,69 +26,68 @@ const UserSelectionRole = () => {
        }
     };
     return (
-        <div className='min-h-screen flex items-center justify-center bg-gray-100 px-4'>
-            <div className='w-full max-w-md bg-white rounded-2xl shadow-sm border p-8'>
-                <div className='text-center mb-8'>
-                    <h2 className='text-3xl font-bold text-gray-800'>
-                        Welcome to JobTracker
-                    </h2>
-                    <p className='text-gray-500 mt-2'>
-                        Choose how you want to continue
-                    </p>
-                </div>
+     <div className='min-h-screen flex items-center justify-center bg-gray-100 px-4'>
+      <div className='w-full max-w-md bg-white rounded-2xl shadow-sm border p-8'>
+       <div className='text-center mb-8'>
+        <h2 className='text-3xl font-bold text-gray-800'>
+         Welcome to JobTracker
+        </h2>
+        <p className='text-gray-500 mt-2'>Choose how you want to continue</p>
+       </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
-                    {errors.role && (
-                        <p className='text-red-500 text-sm mb-4'>
-                            {errors.role.message}
-                        </p>
-                    )}
-                    <label className='flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:border-blue-500 transition'>
-                        <input
-                            type='radio'
-                            {...register('role', {
-                                required: 'name is required',
-                            })}
-                            value='candidate'
-                            className='w-4 h-4'
-                        />
-                        <div>
-                            <h3 className='font-medium text-gray-800'>
-                                Candidate
-                            </h3>
-                            <p className='text-sm text-gray-500'>
-                                Find and apply for jobs
-                            </p>
-                        </div>
-                    </label>
+       <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+        {errors.role && (
+         <p className='text-red-500 text-sm mb-4'>{errors.role.message}</p>
+        )}
+        <label className='flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:border-blue-500 transition'>
+         <input
+          type='radio'
+          {...register('role', {
+           required: 'name is required',
+          })}
+          value='candidate'
+          className='w-4 h-4'
+         />
+         <div>
+          <h3 className='font-medium text-gray-800'>Candidate</h3>
+          <p className='text-sm text-gray-500'>Find and apply for jobs</p>
+         </div>
+        </label>
 
-                    <label className='flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:border-blue-500 transition'>
-                        <input
-                            type='radio'
-                            {...register('role', {
-                                required: 'Please select a role to continue',
-                            })}
-                            value='recruiter'
-                            className='w-4 h-4'
-                        />
-                        <div>
-                            <h3 className='font-medium text-gray-800'>
-                                Recruiter
-                            </h3>
-                            <p className='text-sm text-gray-500'>
-                                Post jobs and manage applicants
-                            </p>
-                        </div>
-                    </label>
+        <label className='flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:border-blue-500 transition'>
+         <input
+          type='radio'
+          {...register('role', {
+           required: 'Please select a role to continue',
+          })}
+          value='recruiter'
+          className='w-4 h-4'
+         />
+         <div>
+          <h3 className='font-medium text-gray-800'>Recruiter</h3>
+          <p className='text-sm text-gray-500'>
+           Post jobs and manage applicants
+          </p>
+         </div>
+        </label>
 
-                    <button
-                        type='submit'
-                        className='w-full mt-4 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition'>
-                        Continue
-                    </button>
-                </form>
-            </div>
-        </div>
+        <button
+         type='submit'
+         className='w-full mt-4 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition'>
+         Continue
+        </button>
+       </form>
+       <p className='text-center text-sm text-gray-600 mt-5'>
+        Already have an account?{' '}
+        <button
+         onClick={() => Navigate('/login')}
+         type='button'
+         className='text-blue-600 hover:underline'>
+         Login
+        </button>
+       </p>
+      </div>
+     </div>
     );
 };
 

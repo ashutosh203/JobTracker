@@ -2,10 +2,10 @@
 
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import sandOtp from '../../service/sandOtp';
+import sandOtp from '../../service/sandOtp.service';
 import { useContext, useState } from 'react';
-import verifyEmailOtp from '../../service/verifyEmailOtp';
-import { RecruiterCreateAccount } from '../../service/RecruiterCreateAccount';
+import verifyEmailOtp from '../../service/verifyEmailOtp.service';
+import { RecruiterCreateAccount } from '../../service/RecruiterCreateAccount.service';
 import JobContext from '../../context/JobContext';
 
 const RecruiterSignup = () => {
@@ -336,15 +336,7 @@ const RecruiterSignup = () => {
      </button>
     </form>
 
-    <p className='text-center text-sm text-gray-600 mt-5'>
-     Already have an account?{' '}
-     <button
-      onClick={() => Navigate('/login')}
-      type='button'
-      className='text-blue-600 hover:underline'>
-      Login
-     </button>
-    </p>
+    
    </div>
   </div>
  );

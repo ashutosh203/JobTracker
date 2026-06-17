@@ -1,111 +1,137 @@
 /** @format */
 
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import CandidateJobDetailsLoader from '../../Loaders/candidateJobDetailLoader';
+import { jobsApply } from '../../service/jobsApply.service';
+
 const CandidateJobDetails = () => {
-    return (
-        <div className='w-full flex justify-center p-4 md:p-8'>
-            <div className='w-full max-w-4xl bg-white rounded-2xl border shadow-sm overflow-hidden'>
-                {/* Header */}
-                <div className='p-6 border-b bg-gray-50'>
-                    <h1 className='text-2xl font-bold text-gray-800'>
-                        Frontend Developer
-                    </h1>
+   const { id } = useParams();
+   const Navigate = useNavigate()
+ const [data, setData] = useState(null);
 
-                    <p className='text-gray-600 mt-2'>ABC Technologies</p>
+ useEffect(() => {
+  const fetchJobs = async () => {
+   try {
+    const response = await axios.get(`http://localhost:45000/jobsDetail/${id}`);
 
-                    <div className='flex flex-wrap gap-3 mt-4'>
-                        <span className='px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm'>
-                            Open
-                        </span>
+    setData(response.data.data);
+   } catch (error) {
+    console.error('Error fetching jobs:', error);
+   }
+  };
 
-                        <span className='px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm'>
-                            Full Time
-                        </span>
-                    </div>
-                </div>
+  fetchJobs();
+ }, [id]);
+ console.log(data);
 
-                {/* Details */}
-                <div className='p-6 grid grid-cols-1 md:grid-cols-2 gap-6'>
-                    <div>
-                        <h3 className='text-sm text-gray-500'>Company Name</h3>
-                        <p className='font-medium text-gray-800'>
-                            ABC Technologies
-                        </p>
-                    </div>
+ return (
+  <>
+   {data ? (
+    <div className='w-full flex justify-center p-4 md:p-8'>
+     <div className='w-full max-w-4xl bg-white rounded-2xl border shadow-sm overflow-hidden'>
+      {/* Header */}
+      <div className='p-6 border-b bg-gray-50'>
+       <h1 className='text-2xl font-bold text-gray-800'>{data?.JobTitle}</h1>
 
-                    <div>
-                        <h3 className='text-sm text-gray-500'>Location</h3>
-                        <p className='font-medium text-gray-800'>
-                            Noida, India
-                        </p>
-                    </div>
+       <p className='text-gray-600 mt-2'>{data?.companyName}</p>
 
-                    <div>
-                        <h3 className='text-sm text-gray-500'>Job Type</h3>
-                        <p className='font-medium text-gray-800'>Full Time</p>
-                    </div>
+       <div className='flex flex-wrap gap-3 mt-4'>
+        <span className='px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm'>
+         Open
+        </span>
 
-                    <div>
-                        <h3 className='text-sm text-gray-500'>Industry Type</h3>
-                        <p className='font-medium text-gray-800'>
-                            Information Technology
-                        </p>
-                    </div>
+        <span className='px-3 py-1 capitalize rounded-full bg-blue-100 text-blue-700 text-sm'>
+         {data.JobType}
+        </span>
+       </div>
+      </div>
 
-                    <div>
-                        <h3 className='text-sm text-gray-500'>Established</h3>
-                        <p className='font-medium text-gray-800'>2015</p>
-                    </div>
+      {/* Details */}
+      <div className='p-6 grid grid-cols-1 md:grid-cols-2 gap-6'>
+       <div>
+        <h3 className='text-sm text-gray-500'>Company Name</h3>
+        <p className='font-medium capitalize text-gray-800'>
+         {data.companyName}
+        </p>
+       </div>
 
-                    <div>
-                        <h3 className='text-sm text-gray-500'>
-                            Organization Size
-                        </h3>
-                        <p className='font-medium text-gray-800'>
-                            100 - 500 Employees
-                        </p>
-                    </div>
-                </div>
+       <div>
+        <h3 className='text-sm text-gray-500'>Location</h3>
+        <p className='font-medium text-gray-800'>{data.Location}</p>
+       </div>
 
-                {/* Benefits */}
-                <div className='p-6 border-t'>
-                    <h2 className='text-lg font-semibold text-gray-800 mb-3'>
-                        Perks & Benefits
-                    </h2>
+       <div>
+        <h3 className='text-sm text-gray-500'>Job Type</h3>
+        <p className='font-medium capitalize text-gray-800'> {data.JobType}</p>
+       </div>
 
-                    <p className='text-gray-600 leading-relaxed'>
-                        Health Insurance, Flexible Working Hours, Paid Leave,
-                        Learning Budget, Remote Work Support.
-                    </p>
-                </div>
+       <div>
+        <h3 className='text-sm text-gray-500'>Industry Type</h3>
+        <p className='font-medium text-gray-800'>{data.IndustryType}</p>
+       </div>
 
-                {/* Job Description */}
-                <div className='p-6 border-t'>
-                    <h2 className='text-lg font-semibold text-gray-800 mb-3'>
-                        Job Details
-                    </h2>
+       <div>
+        <h3 className='text-sm text-gray-500'>Established</h3>
+        <p className='font-medium text-gray-800'>{data.Established}</p>
+       </div>
 
-                    <p className='text-gray-600 leading-7'>
-                        We are looking for a Frontend Developer with experience
-                        in React.js, JavaScript, Tailwind CSS, and REST APIs.
-                        The candidate should have strong problem-solving skills
-                        and be comfortable working in a collaborative
-                        environment.
-                    </p>
-                </div>
+       <div>
+        <h3 className='text-sm text-gray-500'>Organization Size</h3>
+        <p className='font-medium text-gray-800'>{data.Organization}</p>
+       </div>
+      </div>
 
-                {/* Footer */}
-                <div className='p-6 border-t bg-gray-50 flex justify-between items-center'>
-                    <span className='text-sm text-gray-500'>
-                        Posted 2 days ago
-                    </span>
+      {/* Benefits */}
+      <div className='p-6 border-t'>
+       <h2 className='text-lg font-semibold text-gray-800 mb-3'>
+        Perks & Benefits
+       </h2>
 
-                    <button className='px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition'>
-                        Apply Now
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
+       <p className='text-gray-600 leading-relaxed'>{data.PerksBenefits}</p>
+      </div>
+
+      {/* Job Description */}
+      <div className='p-6 border-t'>
+       <h2 className='text-lg font-semibold text-gray-800 mb-3'>Job Details</h2>
+
+       <p className='text-gray-600 leading-7'>{data.JobDetails}</p>
+      </div>
+      <div className='p-6 border-t'>
+       <h2 className='text-[24px] md:text-2xl lg:text-lg font-semibold text-gray-800 capitalize mb-3'>
+        company Address
+       </h2>
+
+       <p className='text-gray-600 leading-7'>{data.address}</p>
+      </div>
+
+      {/* Footer */}
+      <div className='p-6 border-t bg-gray-50 flex justify-between items-center'>
+       <span className='text-sm text-gray-500'>
+        {' '}
+        {new Date(data.createdAt).toLocaleDateString('en-IN', {
+         day: 'numeric',
+         month: 'short',
+         year: 'numeric',
+        })}
+       </span>
+
+       <button
+        className='px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition'
+        onClick={() => {
+         jobsApply(data._id, Navigate);
+        }}>
+        Apply Now
+       </button>
+      </div>
+     </div>
+    </div>
+   ) : (
+    <CandidateJobDetailsLoader />
+   )}
+  </>
+ );
 };
 
 export default CandidateJobDetails;
