@@ -19,6 +19,7 @@ import RecruiterProtectedRoute from '../pages/RecruiterPages/RecruiterProtectedR
 import CandidateRouteGuard from '../pages/CandidatePages/CandidateRouteGuard';
 import ViewJobDetails from '../pages/RecruiterPages/ViewJobDetails';
 import TokenCheck from '../pages/TokenCheck';
+import AppliedJobs from '../pages/CandidatePages/AppliedJobs';
 
 function MainRoutes() {
  return (
@@ -30,6 +31,7 @@ function MainRoutes() {
       <Route path='/' element={<DefaultLayout />}>
        <Route index element={<CandidateJobCardList />} />
        <Route path='jobDetail/:id' element={<CandidateJobDetails />} />
+       <Route path='/applyJobs' element={<AppliedJobs /> } />
       </Route>
      </Route>
      {/* ------------------------------------------------------------------------------------------- */}

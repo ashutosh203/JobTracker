@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import CandidateNavCenter from '../components/CandidateComponents/CandidateNavCenter';
 import CandidateNavRightSide from '../components/CandidateComponents/CandidateNavRightSide';
 import JobTrackerLogo from '../components/JobTrackerLogo';
-import { LogOut, Menu } from 'lucide-react';
+import { LogOut, Menu, UserPlus } from 'lucide-react';
 import { useContext, useState } from 'react';
 import JobContext from '../context/JobContext';
 
@@ -27,9 +27,10 @@ const DefaultNavBar = () => {
       <CandidateNavRightSide setCandidateToken={setCandidateToken} />
      ) : (
       <button
-       className='px-5 md:px-6 py-2 md:py-2.5 rounded-xl bg-linear-to-r from-sky-500 to-blue-600 text-white text-sm font-semibold shadow-lg shadow-sky-500/20 hover:shadow-xl hover:shadow-sky-500/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300'
+       className='px-5 md:px-6 py-2 md:py-2.5 rounded-xl bg-linear-to-r from-sky-500 to-blue-600 text-white text-sm font-semibold shadow-lg shadow-sky-500/20 hover:shadow-xl hover:shadow-sky-500/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex  justify-center items-center gap-1'
        onClick={() => Navigate('/login')}>
-       Login / Sign Up
+       <UserPlus size={20} />
+       Login/SignUp
       </button>
      )}
     </div>
@@ -50,34 +51,35 @@ const DefaultNavBar = () => {
        onClick={(e) => e.stopPropagation()}>
        <h2 className='text-xl font-semibold text-gray-800 mb-0 '>Menu</h2>
        <Link
-        to='#'
+        to='/'
         className='px-5 py-1 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 border '
         onClick={closeMenu}>
-        Profile
+        Home
        </Link>
        <Link
-        to='#'
+        to='/applyJobs'
         className='px-5 py-1 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 border '
         onClick={closeMenu}>
-        Post Job
+        Applied Jobs
        </Link>
 
-       <Link
-        to='#'
-        className='px-4 py-1 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 border'
-        onClick={closeMenu}>
-        Job Lists
-       </Link>
-
-       <Link
-        to='#'
-        className='px-4 py-1 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 border'
-        onClick={closeMenu}>
-        Applicants
-       </Link>
-       <button className='text-center w-full relative px-1 py-1.5 rounded-lg bg-red-500/80 text-black-600 border-red-500/30 flex items-center'>
-        <LogOut className='relative left-2/5' size={20} />
-       </button>
+       {candidateToken ? (
+        <button
+         className='text-center w-full relative px-1 py-1.5 rounded-lg bg-red-500/80 text-black-600 border-red-500/30 flex items-center'
+         onClick={() => {
+          const removeToken = localStorage.removeItem('candidate');
+          setCandidateToken(removeToken);
+          Navigate('/');
+         }}>
+         <LogOut className='relative left-2/5' size={20} />
+        </button>
+       ) : (
+        <button
+         className='text-center w-full relative px-1 py-1.5 rounded-lg bg-red-500/80 text-black-600 border-red-500/30 flex items-center'
+         onClick={() => Navigate('/login')}>
+         <UserPlus className='relative left-2/5' size={20} />
+        </button>
+       )}
       </div>
      </div>
     )}
