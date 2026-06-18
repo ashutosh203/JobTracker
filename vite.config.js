@@ -7,6 +7,6 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig({
- base: '/JobTracker/',
+ base: '/JobTracker',
  plugins: [tailwindcss(), react(), babel({ presets: [reactCompilerPreset()] })],
 });
