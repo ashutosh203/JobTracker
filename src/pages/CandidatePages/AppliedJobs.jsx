@@ -5,17 +5,17 @@ import { useEffect, useState } from 'react';
 import AppliedJobsLoader from '../../Loaders/AppliedJobsLoader';
 import LoginRequired from './LoginRequired';
 import { useNavigate } from 'react-router-dom';
-
+const API_URL = import.meta.env.VITE_API_URL;
 const AppliedJobs = () => {
-  const [data, setData] = useState(null);
-  const Navigate = useNavigate()
+ const [data, setData] = useState(null);
+ const Navigate = useNavigate();
  useEffect(() => {
   const token = localStorage.getItem('candidate');
   if (token) {
    const fetchAppliedJobs = async () => {
     try {
      const response = await axios.get(
-      'http://localhost:45000/candidateAppliedJobsDetails',
+      `${API_URL}/candidateAppliedJobsDetails`,
       {
        headers: {
         Authorization: `Bearer ${token}`,
@@ -23,7 +23,6 @@ const AppliedJobs = () => {
       },
      );
 
-     console.log(response.data);
      setData(response.data);
     } catch (error) {
      console.log(error);
@@ -103,11 +102,11 @@ const AppliedJobs = () => {
            {job.status}
           </span>
 
-              <button className='px-5 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition'
-                onClick={() => {
-                  Navigate(`/jobDetail/${job?.JobsId?._id}`);
-              }}
-              >
+          <button
+           className='px-5 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition'
+           onClick={() => {
+            Navigate(`/jobDetail/${job?.JobsId?._id}`);
+           }}>
            View Details
           </button>
          </div>

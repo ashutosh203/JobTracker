@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 
 /** @format */
 const CandidateJobCard = ({ data }) => {
-    console.log(data)
     return (
      <div className='w-full bg-white border border-gray-200 rounded-2xl p-4  hover:border-blue-300 hover:shadow-md transition-all duration-200'>
       <div className='flex items-start justify-between'>

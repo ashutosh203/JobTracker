@@ -11,10 +11,7 @@ const RecruiterNavLink = () => {
    name: 'job lists',
    link: '/recruiter_admin_panel/jobList',
   },
-  {
-   name: 'Applicants',
-   link: '#',
-  },
+ 
  ];
 
  return (

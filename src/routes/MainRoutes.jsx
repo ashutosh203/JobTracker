@@ -20,10 +20,13 @@ import CandidateRouteGuard from '../pages/CandidatePages/CandidateRouteGuard';
 import ViewJobDetails from '../pages/RecruiterPages/ViewJobDetails';
 import TokenCheck from '../pages/TokenCheck';
 import AppliedJobs from '../pages/CandidatePages/AppliedJobs';
+import { Toaster } from 'react-hot-toast';
+import ViewAppliedJobsCandidate from '../pages/RecruiterPages/ViewAppliedJobsCandidate';
 
 function MainRoutes() {
  return (
   <>
+   <Toaster position='top-right' />
    <Routes>
     {/* this is a default page layout */}
     <Route element={<TokenCheck />}>
@@ -31,7 +34,7 @@ function MainRoutes() {
       <Route path='/' element={<DefaultLayout />}>
        <Route index element={<CandidateJobCardList />} />
        <Route path='jobDetail/:id' element={<CandidateJobDetails />} />
-       <Route path='/applyJobs' element={<AppliedJobs /> } />
+       <Route path='/applyJobs' element={<AppliedJobs />} />
       </Route>
      </Route>
      {/* ------------------------------------------------------------------------------------------- */}
@@ -50,6 +53,10 @@ function MainRoutes() {
        <Route path='JobPostForm' element={<RecruiterJobPostForm />} />
        <Route path='jobList' element={<RecruiterJobLists />} />
        <Route path='ViewJobDetails/:id' element={<ViewJobDetails />} />
+       <Route
+        path='ViewJobCandidateDetails/:id'
+        element={<ViewAppliedJobsCandidate />}
+       />
       </Route>
      </Route>
     </Route>

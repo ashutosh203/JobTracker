@@ -24,7 +24,6 @@ const RecruiterJobPostForm = memo(() => {
         (error) => error === '',
     );
 
-    useEffect(() => console.log(recruiterInputField), [recruiterInputField]);
     const navigate = useNavigate();
     return (
         <div className='w-full flex justify-center py-10 flex-wrap bg-gray-100 relative px-2.5'>

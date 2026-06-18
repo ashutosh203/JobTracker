@@ -2,6 +2,8 @@
 
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const RecruiterProfileData = async (setProfileData) => {
  try {
   const token = localStorage.getItem('recruiter');
@@ -10,16 +12,12 @@ export const RecruiterProfileData = async (setProfileData) => {
    throw new Error('Recruiter token not found');
   }
 
-  const response = await axios.get(
-   'http://localhost:45000/ReSingUp/recruiterProfile',
-   {
-    headers: {
-     Authorization: `Bearer ${token}`,
-    },
+  const response = await axios.get(`${API_URL}/ReSingUp/recruiterProfile`, {
+   headers: {
+    Authorization: `Bearer ${token}`,
    },
-  );
+  });
 
-  console.log(response.data.data)
   setProfileData({
    data: response.data.data,
    success: true,

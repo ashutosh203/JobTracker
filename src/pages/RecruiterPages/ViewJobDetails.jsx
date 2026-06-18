@@ -8,7 +8,6 @@ import JobDetailsLoader from '../../Loaders/JobDetailsLoader';
 const ViewJobDetails = () => {
  const { id } = useParams();
  const [job, setJob] = useState(null);
- console.log(id);
 
  useEffect(() => {
   recruiterJobDetail(id, setJob);

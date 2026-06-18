@@ -1,13 +1,10 @@
 /** @format */
 import { useNavigate, useParams } from 'react-router-dom';
-import sandOtp from '../service/sandOtp.service';
-import verifyEmailOtp from '../service/verifyEmailOtp.service';
 import { CandidateCreateAccount } from '../service/CandidateCreateAccount.service';
 import { useForm } from 'react-hook-form';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import CandidateInputFormLabel from '../components/CandidateComponents/CandidateSingUpAllComponents/CandidateInputFormLabel';
 import { candidateInputValidation } from '../logic/candidateInputValidation';
-import CandidateErrorShowInForm from '../components/CandidateComponents/CandidateSingUpAllComponents/CandidateErrorShowInForm';
 import JobContext from '../context/JobContext';
 const SingUpPage = () => {
  const { role } = useParams();
@@ -16,30 +13,19 @@ const SingUpPage = () => {
  const {
   register,
   handleSubmit,
-  trigger,
-  getValues,
   watch,
+  setError,
   formState: { errors },
  } = useForm({
   mode: 'onChange',
  });
 
- const [response, setResponse] = useState({ message: '', toggle: false });
-
  const onSubmit = (data) => {
-
-  if (!response.toggle) {
-   const value = getValues(['Email', 'otp']);
-   verifyEmailOtp(event, value, setResponse);
-  } else {
-   console.log('create Account', data);
-   data.role = role;
-   CandidateCreateAccount(data, setCandidateToken);
-   Navigate('/');
-  }
+  data.role = role;
+  (async () => {
+   await CandidateCreateAccount(data, setCandidateToken, Navigate, setError);
+  })();
  };
- // eslint-disable-next-line react-hooks/incompatible-library
- const optValue = watch('otp');
 
  return (
   <div className='min-h-screen flex items-center justify-center bg-gray-100 p-4'>
@@ -62,24 +48,11 @@ const SingUpPage = () => {
        placeholder='Enter your full name: AshuTheCoder'
        className={`w-full px-4 py-2 border rounded-lg outline-none focus:ring-2  ${errors.FullName ? 'border-red-500 focus:ring-red-400' : 'border-gray-300 focus:ring-blue-500'}`}
       />
-      <CandidateErrorShowInForm errors={errors} Name={'FullName'} />
+      {errors['FullName'] && (
+       <p className='mt-1 text-sm text-red-500'>{errors['FullName'].message}</p>
+      )}
      </div>
 
-     {/* Email */}
-     <div>
-      <CandidateInputFormLabel label={'Email Address'} />
-      <input
-       {...register('Email', candidateInputValidation.Email)}
-       type='email'
-       placeholder='Enter your email'
-       className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2  $${
-        errors.Email
-         ? 'border-red-500 focus:ring-red-400'
-         : 'border-gray-300 focus:ring-blue-500'
-       }`}
-      />
-      <CandidateErrorShowInForm errors={errors} Name={'Email'} />
-     </div>
      {/* Phone Number */}
      <div>
       <CandidateInputFormLabel label={'Phone Number'} />
@@ -90,85 +63,73 @@ const SingUpPage = () => {
        className={`w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 ${'border-gray-300'}`}
       />
 
-      <CandidateErrorShowInForm errors={errors} Name={'PhoneNumber'} />
+      {errors['PhoneNumber'] && (
+       <p className='mt-1 text-sm text-red-500'>
+        {errors['PhoneNumber'].message}
+       </p>
+      )}
      </div>
-     {/* OTP */}
-     {!response.toggle && (
-      <div>
-       <CandidateInputFormLabel label={' Verify Email'} />
-       <div className='flex items-center gap-3'>
-        <input
-         {...register('otp', candidateInputValidation.otp)}
-         type='tel'
-         maxLength={6}
-         placeholder='Enter OTP'
-         className='flex-1 px-4 py-2.5 border border-gray-300 rounded-xl outline-none transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
-        />
+     {/* Email */}
+     <div>
+      <CandidateInputFormLabel label={'Email Address'} />
+      <input
+       {...register('Email', candidateInputValidation.Email)}
+       type='email'
+       placeholder='Enter your email'
+       className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2  ${
+        errors.Email
+         ? 'border-red-500 focus:ring-red-400'
+         : 'border-gray-300 focus:ring-blue-500'
+       }`}
+      />
+      {errors['Email'] && (
+       <p className='mt-1 text-sm text-red-500'>{errors['Email'].message}</p>
+      )}
+     </div>
 
-        <button
-         type='button'
-         className={`px-5 py-2.5 text-white font-medium rounded-xl transition ${'bg-blue-600 hover:bg-blue-700'}`}
-         onClick={async (event) => {
-          const isValid = await trigger(['FullName', 'Email', 'PhoneNumber']);
-          if (!isValid) {
-           return;
-          }
-          const values = getValues(['FullName', 'Email', 'PhoneNumber']);
-          values.unshift(role);
-          sandOtp(event, values, setResponse);
-         }}>
-         Send
-        </button>
-       </div>
+     {/* this section is password  */}
 
-       <p
-        className={`mt-2 text-xs ${errors.otp ? 'text-red-500' : 'text-gray-950 '}`}>
-        {errors.otp ? errors.otp.message : response.message}
-       </p>
-      </div>
-     )}
-     {response.toggle && (
-      <div>
-       <CandidateInputFormLabel label={' Password'} />
-       <input
-        {...register('password', candidateInputValidation.password)}
-        maxLength={5}
-        type='password'
-        placeholder='Confirm password'
-        className='w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500'
-       />
-       <p
-        className={`mt-2 text-xs ${errors.password ? 'text-red-500' : 'text - gray - 800'}`}>
-        {errors.password ? errors.password.message : ''}
-       </p>
-      </div>
-     )}
-     {response.toggle && (
-      <div>
-       <CandidateInputFormLabel label={'  Confirm Password'} />
-       <input
-        maxLength={5}
-        {...register(
-         'ConfirmPassword',
-         candidateInputValidation.ConfirmPassword(watch),
-        )}
-        type='password'
-        placeholder='Confirm password'
-        className='w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500'
-       />
+     <div>
+      <CandidateInputFormLabel label={' Password'} />
+      <input
+       {...register('password', candidateInputValidation.password)}
+       maxLength={5}
+       type='password'
+       placeholder='Enter password'
+       className='w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500'
+      />
+      <p
+       className={`mt-2 text-xs ${errors.password ? 'text-red-500' : 'text - gray - 800'}`}>
+       {errors.password ? errors.password.message : ''}
+      </p>
+     </div>
 
-       <p
-        className={`mt-2 text-xs ${errors.ConfirmPassword ? 'text-red-500' : 'text - gray - 800'}`}>
-        {errors.ConfirmPassword ? errors.ConfirmPassword.message : ''}
-       </p>
-      </div>
-     )}
+     {/* this is a confirm password */}
+
+     <div>
+      <CandidateInputFormLabel label={'  Confirm Password'} />
+      <input
+       maxLength={5}
+       {...register(
+        'ConfirmPassword',
+        candidateInputValidation.ConfirmPassword(watch),
+       )}
+       type='password'
+       placeholder='Confirm password'
+       className='w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500'
+      />
+
+      <p
+       className={`mt-2 text-xs ${errors.ConfirmPassword ? 'text-red-500' : 'text - gray - 800'}`}>
+       {errors.ConfirmPassword ? errors.ConfirmPassword.message : ''}
+      </p>
+     </div>
+
      {
       <button
        type='submit'
-       disabled={optValue?.length !== 6}
-       className={`w-full capitalize py-2.5 text-white rounded-lg transition ${optValue?.length !== 6 ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'}`}>
-       {response.toggle ? 'Create Account' : 'verify Email'}
+       className={`w-full capitalize py-2.5 text-white rounded-lg transition  bg-blue-600 hover:bg-blue-700`}>
+       Create Account
       </button>
      }
     </form>

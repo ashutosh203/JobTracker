@@ -1,3 +1,5 @@
+/** @format */
+
 export const candidateInputValidation = {
  FullName: {
   required: 'Name is required',
@@ -38,20 +40,7 @@ export const candidateInputValidation = {
   },
  },
 
- otp: {
-  minLength: {
-   value: 6,
-   message: 'OTP must be 6 digits',
-  },
-  maxLength: {
-   value: 6,
-   message: 'OTP must be 6 digits',
-  },
-  pattern: {
-   value: /^[0-9]+$/,
-   message: 'Only numbers allowed',
-  },
- },
+
 
  password: {
   required: 'Password is required',
@@ -77,17 +66,7 @@ export const candidateInputValidation = {
      ? true
      : 'password is not match',
   };
-   },
- 
- async sand(trigger, getValues, role, sandOtp, setResponse) {
-  const isValid = await trigger(['FullName', 'Email', 'PhoneNumber']);
-  if (!isValid) {
-   return;
-  }
-  const values = getValues(['FullName', 'Email', 'PhoneNumber']);
-  values.unshift(role);
-  sandOtp(event, values, setResponse);
  },
-};
 
-// 196
+
+};

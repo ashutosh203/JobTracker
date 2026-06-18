@@ -17,9 +17,8 @@ const LogInPage = () => {
   mode: 'onChange',
  });
 
- const onSubmit = (data) => {
-  console.log(data);
-  userLogIn(data, Navigate, setCandidateToken);
+ const onSubmit = async (data) => {
+  await userLogIn(data, Navigate, setCandidateToken);
  };
 
  return (

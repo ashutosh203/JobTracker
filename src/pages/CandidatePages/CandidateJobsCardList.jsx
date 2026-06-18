@@ -3,13 +3,15 @@ import { useEffect, useState } from 'react';
 import CandidateJobCard from '../../components/CandidateComponents/CandidateJobCard';
 import axios from 'axios';
 import JobCardSkeleton from '../../Loaders/JobCardSkeleton';
+const API_URL = import.meta.env.VITE_API_URL;
+
 const CandidateJobCardList = () => {
  const [data, setData] = useState(null);
 
  useEffect(() => {
   const fetchJobs = async () => {
    try {
-    const response = await axios.get('http://localhost:45000/AllJobsDetail');
+    const response = await axios.get(`${API_URL}/AllJobsDetail`);
 
     setData(response.data.data);
    } catch (error) {

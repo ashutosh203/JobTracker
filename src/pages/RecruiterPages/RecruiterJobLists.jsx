@@ -31,11 +31,11 @@ const RecruiterJobLists = () => {
       </button>
      </div>
 
-     <table className='w-full min-w-[650px] sm:min-w-[750px]'>
+     <table className='w-full min-w-162.5 sm:min-w-187.5'>
       <thead>
        <tr className='bg-blue-600 text-white'>
         <th
-         colSpan={3}
+         colSpan={4}
          className='px-3 sm:px-6 py-4 text-left text-sm sm:text-lg font-semibold'>
          Job Listings
         </th>
@@ -56,6 +56,9 @@ const RecruiterJobLists = () => {
 
         <th className='px-3 sm:px-6 py-3 text-center text-xs sm:text-sm font-medium'>
          Job Details
+        </th>
+        <th className='px-3 sm:px-6 py-3 text-center text-xs sm:text-sm font-medium'>
+         Candidate
         </th>
 
         <th className='px-3 sm:px-6 py-3 text-center text-xs sm:text-sm font-medium'>
@@ -83,6 +86,15 @@ const RecruiterJobLists = () => {
            className='flex justify-center items-center gap-1 text-blue-600 text-xs sm:text-sm hover:underline'>
            <Link2 size={16} />
            <span>View Details</span>
+          </NavLink>
+         </td>
+         {/* this is view applied candidate details */}
+         <td className='px-3 sm:px-6 py-4 text-center'>
+          <NavLink
+           to={`/recruiter_admin_panel/ViewJobCandidateDetails/${items._id}`}
+           className='flex justify-center items-center gap-1 text-blue-600 text-xs sm:text-sm hover:underline'>
+           <Link2 size={16} />
+           <span>View</span>
           </NavLink>
          </td>
 

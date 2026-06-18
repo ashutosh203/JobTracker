@@ -2,10 +2,17 @@
 
 import axios from 'axios';
 
-export const RecruiterCreateAccount = async (data, setRecruiterToken) => {
+const API_URL = import.meta.env.VITE_API_URL;
+
+export const RecruiterCreateAccount = async (
+ data,
+ setRecruiterToken,
+ setError,
+ Navigate,
+) => {
  try {
   const response = await axios.post(
-   'http://localhost:45000/ReSingUp/recruiterAccountCreate',
+   `${API_URL}/ReSingUp/recruiterAccountCreate`,
    {
     role: data.role,
     companyName: data.companyName,
@@ -17,10 +24,17 @@ export const RecruiterCreateAccount = async (data, setRecruiterToken) => {
     address: data.Address,
    },
   );
-  console.log(response.data);
   await localStorage.setItem('recruiter', response.data.data.token);
   await setRecruiterToken('recruiter');
+  await Navigate('/recruiter_admin_panel', { replace: true });
  } catch (error) {
-  console.log(error);
+  console.log(error.response.data);
+  const data = error.response.data;
+  if (data?.email) {
+   setError('email', {
+    type: 'server',
+    message: 'Email already registered',
+   });
+  }
  }
 };

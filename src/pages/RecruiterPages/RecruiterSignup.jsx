@@ -2,22 +2,18 @@
 
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import sandOtp from '../../service/sandOtp.service';
-import { useContext, useState } from 'react';
-import verifyEmailOtp from '../../service/verifyEmailOtp.service';
+import { useContext } from 'react';
 import { RecruiterCreateAccount } from '../../service/RecruiterCreateAccount.service';
 import JobContext from '../../context/JobContext';
 
 const RecruiterSignup = () => {
  const Navigate = useNavigate();
  const { setRecruiterToken } = useContext(JobContext);
- const [response, setResponse] = useState({ message: '', toggle: false });
  const { role } = useParams();
  const {
   register,
   handleSubmit,
-  // trigger,
-  getValues,
+ setError,
   watch,
   formState: { errors },
  } = useForm({
@@ -25,11 +21,10 @@ const RecruiterSignup = () => {
  });
 
  const onSubmit = async (data) => {
-  console.log(data);
   data.role = role;
 
-  await RecruiterCreateAccount(data, setRecruiterToken);
-  await Navigate('/recruiter_admin_panel', { replace: true });
+  await RecruiterCreateAccount(data, setRecruiterToken, setError, Navigate);
+  
  };
 
  return (
@@ -207,136 +202,83 @@ const RecruiterSignup = () => {
         placeholder='recruiter@company.com'
         className='flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
        />
-
-       <button
-        onClick={(event) => {
-         const value = getValues('email');
-         sandOtp(event, value, setResponse);
-        }}
-        type='button'
-        className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition'>
-        Send OTP
-       </button>
       </div>
-      {errors.email ||
-       (response.message && (
-        <p
-         className={`mt-1 text-sm ${errors.email ? 'text-red-500' : 'text-green-600'} `}>
-         {errors.email?.message || response?.message}
-        </p>
-       ))}
+      {(errors.email)  && (
+       <p
+        className={`mt-1 text-sm ${
+         errors.email ? 'text-red-500' : 'text-green-600'
+        }`}>
+        {errors.email?.message }
+       </p>
+      )}
      </div>
 
-     {!response.toggle && (
+     <div>
       <div>
        <label className='block text-sm font-medium text-gray-700 mb-1'>
-        Email Verification Code
+        Password
        </label>
 
-       <div className='flex gap-2'>
-        <input
-         type='text'
-         {...register('otp')}
-         maxLength={6}
-         placeholder='Enter OTP'
-         className='flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500'
-        />
-
-        <button
-         type='button'
-         onClick={(event) => {
-          const value = getValues(['email', 'otp']);
-          verifyEmailOtp(event, value, setResponse);
-         }}
-         className='px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition'>
-         Verify
-        </button>
-        {errors.otp && (
-         <p className='mt-1 text-sm text-red-500'>{errors.otp.message}</p>
-        )}
-       </div>
-
-       {/* Optional Success Message */}
-       {response.toggle ? (
-        <p className='text-green-600 text-sm mt-2'>
-         Email verified successfully
-        </p>
-       ) : (
-        ''
+       <input
+        type='password'
+        {...register('password', {
+         required: 'Password is required',
+         validate: (value) =>
+          (value && value.trim() !== '') || 'Password is required',
+         maxLength: {
+          value: 5,
+          message: 'Password must be 5 Digit',
+         },
+         minLength: {
+          value: 5,
+          message: 'Password must be 5 Digit',
+         },
+         pattern: {
+          value: /^[0-9]+$/,
+          message: 'Only numbers allowed',
+         },
+        })}
+        placeholder='Enter password'
+        className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+       />
+       {errors.password && (
+        <p className='mt-1 text-sm text-red-500'>{errors.password.message}</p>
        )}
       </div>
-     )}
 
-     {response.toggle && (
       <div>
-       <div>
-        <label className='block text-sm font-medium text-gray-700 mb-1'>
-         Password
-        </label>
+       <label className='block text-sm font-medium text-gray-700 mb-1'>
+        Confirm Password
+       </label>
 
-        <input
-         type='password'
-         {...register('password', {
-          required: 'Password is required',
-          validate: (value) =>
-           (value && value.trim() !== '') || 'Password is required',
-          maxLength: {
-           value: 5,
-           message: 'Password must be 5 Digit',
-          },
-          minLength: {
-           value: 5,
-           message: 'Password must be 5 Digit',
-          },
-          pattern: {
-           value: /^[0-9]+$/,
-           message: 'Only numbers allowed',
-          },
-         })}
-         placeholder='Enter password'
-         className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-        />
-        {errors.password && (
-         <p className='mt-1 text-sm text-red-500'>{errors.password.message}</p>
-        )}
-       </div>
-
-       <div>
-        <label className='block text-sm font-medium text-gray-700 mb-1'>
-         Confirm Password
-        </label>
-
-        <input
-         type='password'
-         {...register('confirmPassword', {
-          required: 'Enter your password',
-          validate: (value) =>
-           // eslint-disable-next-line react-hooks/incompatible-library
-           value.trim() !== '' && watch('password') === value
-            ? true
-            : 'password is not match',
-         })}
-         placeholder='Confirm password'
-         className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-        />
-        {errors.confirmPassword && (
-         <p className='mt-1 text-sm text-red-500'>
-          {errors.confirmPassword.message}
-         </p>
-        )}
-       </div>
+       <input
+        type='password'
+        {...register('confirmPassword', {
+         required: 'Enter your password',
+         validate: (value) =>
+          // eslint-disable-next-line react-hooks/incompatible-library
+          value.trim() !== '' && watch('password') === value
+           ? true
+           : 'password is not match',
+        })}
+        placeholder='Confirm password'
+        className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+       />
+       {errors.confirmPassword && (
+        <p className='mt-1 text-sm text-red-500'>
+         {errors.confirmPassword.message}
+        </p>
+       )}
       </div>
-     )}
+     </div>
 
      <button
       type='submit'
-      disabled={!response.toggle}
-      className={`w-full py-3  text-white rounded-lg font-medium ${response.toggle ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400'} transition`}>
+    
+      className={`w-full py-3  text-white rounded-lg font-medium bg-blue-600 hover:bg-blue-700  transition`}>
       Create Recruiter Account
      </button>
     </form>
-
-    
    </div>
   </div>
  );

@@ -1,7 +1,8 @@
 /** @format */
 
 import axios from 'axios';
-
+import toast from 'react-hot-toast';
+const API_URL = import.meta.env.VITE_API_URL;
 export const jobsApply = async (id, navigate) => {
  try {
   const candidateToken = localStorage.getItem('candidate');
@@ -13,7 +14,7 @@ export const jobsApply = async (id, navigate) => {
   }
 
   const response = await axios.post(
-   `http://localhost:45000/jobApply/${id}`,
+   `${API_URL}/jobApply/${id}`,
    {},
    {
     headers: {
@@ -22,8 +23,8 @@ export const jobsApply = async (id, navigate) => {
    },
   );
 
-  alert(response.data.message);
+  toast.success(response.data.message);
  } catch (error) {
-  alert(error.response.data.message);
+  toast.error(error.response.data.message);
  }
 };

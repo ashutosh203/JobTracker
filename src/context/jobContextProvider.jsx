@@ -1,13 +1,10 @@
 /** @format */
 
-import {  useState } from 'react';
+import { useState } from 'react';
 import JobContext from './JobContext';
 import { initialFormState } from '../utils/recruiterFields';
-import { CandidateDetails } from '../utils/LoginSingUpData';
 
 export const JobContextProvider = ({ children }) => {
-
-
  const [recruiterInputField, setRecruiterInputField] = useState({
   ...initialFormState,
  });
@@ -18,7 +15,6 @@ export const JobContextProvider = ({ children }) => {
  {
   /*all data here*/
  }
- const [candidateData, setCandidateData] = useState({ ...CandidateDetails });
  const [candidateToken, setCandidateToken] = useState(
   localStorage.getItem('candidate'),
  );
@@ -32,8 +28,6 @@ export const JobContextProvider = ({ children }) => {
     setRecruiterToken,
     candidateToken,
     setCandidateToken,
-    candidateData,
-    setCandidateData,
     recruiterInputField,
     setRecruiterInputField,
     recruiterErrors,
@@ -41,7 +35,6 @@ export const JobContextProvider = ({ children }) => {
     initialFormState,
     jobsData,
     setJobsData,
-    CandidateDetails,
    }}>
    {children}
   </JobContext.Provider>

@@ -1,15 +1,17 @@
 /** @format */
 
 import axios from 'axios';
+import toast from 'react-hot-toast';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const JobCreate = async (recruiterInputField) => {
- try { 
+ try {
   const token = await localStorage.getItem('recruiter');
 
-  console.log(recruiterInputField);
 
-   await axios.post(
-   'http://localhost:45000/ReSingUp/jobsCreate',
+  await axios.post(
+   `${API_URL}/ReSingUp/jobsCreate`,
 
    recruiterInputField, // this is a data
 
@@ -19,7 +21,8 @@ export const JobCreate = async (recruiterInputField) => {
     },
    },
   );
+  toast.success('Job Post Successfully')
  } catch (error) {
- console.log(error)
-}
+  console.log(error);
+ }
 };
