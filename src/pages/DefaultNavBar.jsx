@@ -70,7 +70,8 @@ const DefaultNavBar = () => {
           const removeToken = localStorage.removeItem('candidate');
           setCandidateToken(removeToken);
           Navigate('/');
-         }}>
+         }}
+        >
          <LogOut className='relative left-2/5' size={20} />
         </button>
        ) : (
